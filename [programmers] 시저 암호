@@ -1,0 +1,26 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+string solution(string s, int n) {
+    string answer = "";
+    int temp;
+    for(int i=0;i<s.size();i++){
+        if(s[i]>='A'&& s[i]<='Z'){
+            temp=s[i];
+            temp+=n;
+            if(temp>'Z') temp=temp-('Z'+1)+'A';
+            s[i]=temp;
+        }
+        else if(s[i]>='a'&& s[i]<='z'){
+            temp=s[i];
+            temp+=n;
+            if(temp>'z') temp=temp-('z'+1)+'a';
+            s[i]=temp;
+        }
+        answer+=s[i];
+    }
+    
+    return answer;
+}
