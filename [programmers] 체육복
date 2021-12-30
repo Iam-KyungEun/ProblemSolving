@@ -1,0 +1,42 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+bool cmp(const int a,const int b){
+    return a < b ? true : false;
+}
+
+int solution(int n, vector<int> lost, vector<int> reserve) {
+    int answer = n-lost.size();
+    sort(lost.begin(),lost.end(),cmp);
+    bool reservArr[32]={false,}; //여분 체육복 가진 친구들 index
+    bool lostArr[32]={false,};
+    
+    for(int i=0;i<lost.size();i++){
+        lostArr[lost[i]]=true;
+    }
+    
+    for(int i=0;i<reserve.size();i++){
+        reservArr[reserve[i]]=true;
+        if(lostArr[reserve[i]]){
+            lostArr[reserve[i]]=false;
+            reservArr[reserve[i]]=false;
+            answer++;
+        }
+    }
+    for(int i=0;i<lost.size();i++){
+        if(!lostArr[lost[i]]) continue;
+        else if(reservArr[lost[i]-1]){
+            reservArr[lost[i]-1]=false;
+            answer++;
+        }
+        else if(reservArr[lost[i]+1]){
+            reservArr[lost[i]+1]=false;
+            answer++;
+        }
+    }
+    
+    return answer;
+}
