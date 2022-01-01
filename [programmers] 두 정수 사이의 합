@@ -1,0 +1,22 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+long long solution(int a, int b) {
+    long long answer = 0;
+    long long a_real=0,b_real=0;
+    a_real=max(a,b);
+    b_real=min(a,b);
+    
+    if(a_real<0 && b_real<0){
+        a_real=-a_real;
+        b_real=-b_real;
+        answer = -(a_real+b_real)*(b_real-a_real+1)/2;
+    }
+    else{
+        answer = (a_real+b_real)*(a_real-b_real+1)/2;
+    }
+    
+    return answer;
+}
