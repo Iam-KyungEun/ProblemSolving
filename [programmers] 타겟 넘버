@@ -1,0 +1,27 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int T;
+int answer=0;
+
+void sol(vector<int> numbers, int idx,int sum){
+    if(idx>=numbers.size()){
+        if(sum==T) answer++;
+    }
+    else{
+        sum+=numbers[idx];
+        sol(numbers, idx+1, sum);
+        sum-=numbers[idx];
+        sum-=numbers[idx];
+        sol(numbers,idx+1,sum);
+        sum+=numbers[idx];
+    }
+}
+
+int solution(vector<int> numbers, int target) {
+    T=target;
+    sol(numbers,0,0);
+    return answer;
+}
