@@ -1,0 +1,63 @@
+
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+#include <string>
+#include <vector>
+#include <iostream>
+using namespace std;
+
+int solution(string s) {
+    int answer = 0;
+    int min_cnt=987987987;
+    for(int i=1;i<=s.length();i++){
+        string prev="";
+        int last=0;
+        int cnt=0,total_cnt=0;
+        for(int j=0;j<s.length();){
+            string temp = s.substr(j,i);    
+            if(temp==prev)  {
+                cnt++;
+                if(cnt==2) total_cnt++;
+                else if(cnt==10) total_cnt++;
+                else if(cnt==100) total_cnt++;
+            }
+            else{
+                total_cnt+=temp.length();
+                cnt=1;
+                prev=temp;
+            }
+            j+=i;
+        }
+        if(total_cnt<min_cnt) min_cnt=total_cnt;
+    }
+    return min_cnt;
+}
