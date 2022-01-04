@@ -1,0 +1,44 @@
+#include <string>
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+const int MAX = 105;
+int MAP[MAX][MAX];
+
+vector<int> solution(int rows, int columns, vector<vector<int>> queries) {
+    vector<int> answer;
+    int num=1;
+    for(int i=1;i<=rows;i++){
+        for(int j=1;j<=columns;j++){
+            MAP[i][j]=num++;
+        }
+    }
+    for(int i=0;i<queries.size();i++){
+        int minnum=987987987;
+        int startY=queries[i][0],startX=queries[i][1];
+        int endY=queries[i][2],endX=queries[i][3];
+        int temp= MAP[startY][startX];
+        if(temp<minnum) minnum=temp;
+        for(int j=startY;j<endY;j++){
+            MAP[j][startX]=MAP[j+1][startX];
+            if(MAP[j][startX]<minnum) minnum=MAP[j][startX];
+        }
+        for(int j=startX;j<endX;j++){
+            MAP[endY][j]=MAP[endY][j+1];
+            if(MAP[endY][j]<minnum) minnum=MAP[endY][j];
+        }
+        for(int j=endY;j>startY;j--){
+            MAP[j][endX]=MAP[j-1][endX];
+            if(MAP[j][endX]<minnum) minnum=MAP[j][endX];
+        }
+        for(int j=endX;j>startX+1;j--){
+            MAP[startY][j]=MAP[startY][j-1];
+            if(MAP[startY][j]<minnum) minnum=MAP[startY][j];
+        }
+        MAP[startY][startX+1]=temp;
+        answer.push_back(minnum);
+    }
+    return answer;
+}
