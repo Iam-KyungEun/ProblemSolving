@@ -1,0 +1,77 @@
+#include <string>
+#include <vector>
+#include <stack>
+#include <iostream>
+
+using namespace std;
+string step3(string& u,string& v);
+string step4(string& u, string& v);
+
+void step2(string w,string& u,string& v){
+    stack <char> s;
+    u="",v="";
+    if(w.length()==0)   return;  
+    s.push(w[0]);
+    bool flag=false;
+    for(int i=1;i<w.length();i++){
+            if(w[i]==w[0]) {
+                if(i>1 && s.empty()){
+                    u=w.substr(0,i);
+                    v=w.substr(i);
+                    break; 
+                }
+                else s.push(w[i]);
+            }
+            else{
+                if(!s.empty()) s.pop();
+                else {
+                    u=w.substr(0,i);
+                    v=w.substr(i);
+                    break;
+            }
+        }
+    }
+    if(u.empty()) u=w; 
+    cout<<u<<" "<<v<<"\n";
+}
+
+string step3(string& u,string& v){
+    string ans="";
+    string temp="";
+    temp=u;
+    if(v.empty()) return ans=temp;
+    step2(v,u,v);
+    if(u[0]=='(') ans = temp + step3(u,v);
+    else if(u[0]==')') ans = temp + step4(u,v);
+    return ans;
+}
+
+string step4(string& u, string& v){
+    string ans="";
+    string temp=u;
+
+    step2(v,u,v);
+    if(u[0]=='(') ans = step3(u,v);
+    else if(u[0]==')') ans = step4(u,v);
+    ans = "("+ans+")";
+
+    for(int i=1;i<temp.length()-1;i++){
+        if(temp[i]=='(') ans=ans+')';
+        else if(temp[i]==')') ans=ans+'(';
+    }
+    return ans;
+}
+string solution(string p) {
+    string answer = "";
+    string u="";
+    string v="";
+
+    step2(p,u,v);
+    // cout<<u<<' '<<v;
+    if(u.empty()) return answer;
+    else {
+        if(!u.empty() && u[0]=='(') answer = step3(u,v);
+        else if(!u.empty() && u[0]==')') answer = step4(u,v);
+    }
+    return answer;
+}
