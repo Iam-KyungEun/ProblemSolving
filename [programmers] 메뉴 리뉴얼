@@ -1,0 +1,56 @@
+#include <string>
+#include <vector>
+#include <map>
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+vector<int> combi;
+map <string,int> m;
+map <string,int>::iterator iter;
+
+bool check[25];
+int maxval[15];
+string order="";
+
+void combination(int idx,int len,int course){
+    if(idx>=course){
+        string temp="";
+        for(int i=0;i<idx;i++){
+            temp.push_back(order[combi[i]]);
+        }
+        m[temp]++;
+        if(m[temp]>maxval[course]) maxval[course]=m[temp];
+    }
+    else{
+        for(int i=0;i<len;i++){
+            combi[idx]=i;
+            if((idx>0 && combi[idx-1]>=combi[idx]) || check[i]) continue;
+            check[i]=true;
+            combination(idx+1,len,course);
+            check[i]=false;
+        }
+    }
+}
+
+vector<string> solution(vector<string> orders, vector<int> course) {
+    vector<string> answer;
+    for(int i=0;i<orders.size();i++){
+        order = orders[i];
+        sort(order.begin(),order.end());
+        combi.assign(order.length()+1,0);
+        for(int j=0;j<course.size();j++){
+            combination(0,order.length(),course[j]);
+        }
+    }
+
+    for(int i=0;i<course.size();i++){
+        for(iter = m.begin(); iter != m.end(); ++iter){
+            string tmp = iter->first;
+            if((iter->second)==maxval[course[i]] && tmp.length()==course[i] && maxval[course[i]]>1) 
+                answer.push_back(tmp);
+        }
+    }
+    sort(answer.begin(),answer.end());
+    return answer;
+}   
