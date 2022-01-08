@@ -1,0 +1,30 @@
+#include <string>
+#include <vector>
+#include <queue>
+#include <cmath>
+using namespace std;
+
+vector<int> solution(vector<int> progresses, vector<int> speeds) {
+    vector<int> answer;
+    queue <int> remain;
+    for(int i=0;i<progresses.size();i++){
+        remain.push(ceil(double(100-progresses[i])/speeds[i]));
+    }
+    int cnt=1;
+    int first=remain.front();
+    remain.pop();
+    while(!remain.empty()){
+        if(remain.front()<=first) {
+            remain.pop();
+            cnt++;
+        }
+        else{
+            first = remain.front();
+            answer.push_back(cnt);
+            cnt=1;
+            remain.pop();
+        }
+    }
+    answer.push_back(cnt);
+    return answer;
+}
