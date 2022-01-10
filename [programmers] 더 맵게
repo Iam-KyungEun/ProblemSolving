@@ -1,0 +1,26 @@
+#include <string>
+#include <vector>
+#include <queue>
+#include <algorithm>
+
+using namespace std;
+
+int solution(vector<int> scoville, int K) {
+    int answer = 0;
+    priority_queue <int, vector<int>,greater<int> > pq;
+    for(int i=0;i<scoville.size();i++){
+        pq.push(scoville[i]);
+    }
+    int cnt=0;
+    while(pq.size()>1 && pq.top()<K){
+        int temp = pq.top();
+        pq.pop();
+        int temp2 = pq.top();
+        pq.pop();
+        pq.push(temp+temp2*2);
+        cnt++;
+    }
+    if(pq.top()<K) answer = -1;
+    else answer= cnt;
+    return answer;
+}
