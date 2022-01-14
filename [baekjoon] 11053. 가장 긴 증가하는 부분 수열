@@ -1,0 +1,22 @@
+#include <iostream>
+
+using namespace std;
+
+int arr[1001]; 
+int dp[1001];
+int main(){
+	int N,maxlength=0;
+	
+	cin>>N;
+	for(int i=0;i<N;i++){
+		cin>>arr[i];
+		dp[i]=1;
+		for(int j=0;j<i;j++){
+			if(arr[i]>arr[j] && dp[i]<dp[j]+1) dp[i] = dp[j]+1;
+		}
+		if(dp[i]>maxlength) maxlength = dp[i];
+	}
+	
+	cout<<maxlength;
+	return 0;
+}
