@@ -1,0 +1,27 @@
+#include <iostream>
+
+using namespace std;
+
+int arr[10002]; 
+int dp[10002];
+int main(){
+	int N,maxval;
+	cin>>N;
+	for(int i=1;i<=N;i++){
+		cin>>arr[i];
+	}
+	if(N==1){
+		cout<<arr[1];
+		return 0;	
+	} 
+	dp[1]=arr[1];
+	dp[2]=dp[1]+arr[2];
+	for(int i=3;i<=N;i++){
+		dp[i]=dp[i-1];
+		int temp = max(dp[i-3]+arr[i-1]+arr[i],dp[i-2]+arr[i]);
+		dp[i]=max(dp[i],temp);
+	}
+	
+	cout<<dp[N];
+	return 0;
+}
