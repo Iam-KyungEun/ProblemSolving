@@ -1,0 +1,55 @@
+#include <iostream>
+#include <queue>
+#include <cstring>
+
+using namespace std;
+const int MAX = 55;
+bool map[MAX][MAX];
+bool check[MAX][MAX];
+int dy[4]={-1,1,0,0};
+int dx[4]={0,0,-1,1};
+
+int T,N,M,K,X,Y;
+
+void bfs(int y,int x){
+	queue < pair<int,int> > Q;
+	Q.push(make_pair(y,x));
+	check[y][x]=true;
+	while(!Q.empty()){
+		int curY=Q.front().first;
+		int curX=Q.front().second;
+		Q.pop();
+		for(int i=0;i<4;i++){
+			int ny=curY+dy[i];
+			int nx=curX+dx[i];
+			if(ny>=0 && nx>=0 &&ny<N && nx<M && !check[ny][nx] && map[ny][nx]){
+				check[ny][nx]=true;
+				Q.push(make_pair(ny,nx));
+			}
+		}
+	}
+}
+int main(){
+	cin>>T;
+	for(int tc=1;tc<=T;tc++){
+		cin>>M>>N>>K;
+		int earthworm=0;
+		for(int k=0;k<K;k++){
+			cin>>X>>Y;
+			map[Y][X]=true;
+		}
+		
+		for(int i=0;i<N;i++){
+			for(int j=0;j<M;j++){
+				if(map[i][j] && !check[i][j]){
+					bfs(i,j);
+					earthworm++;
+				}
+			}
+		}
+		cout<<earthworm<<"\n";
+		memset(map,0,sizeof(map));
+		memset(check,0,sizeof(check));
+	}
+	return 0;
+}
