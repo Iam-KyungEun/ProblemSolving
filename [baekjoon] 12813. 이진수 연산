@@ -1,0 +1,47 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+string strA;
+string strB;
+string AandB;
+string AorB;
+string AxorB;
+string notA;
+string notB;
+int main(){
+	cin>>strA>>strB;
+	for(int i=0;i<strA.size();i++){
+		if(strA[i]=='1'){
+			if(strB[i]=='1') {
+				AandB+='1';	
+				AxorB+='0';
+				notB+='0';
+			}
+			else if(strB[i]=='0') {
+				AandB+='0';	
+				AxorB+='1';
+				notB+='1';	
+			}
+			AorB+='1';
+			notA+='0';
+		}
+		else if(strA[i]=='0'){
+			if(strB[i]=='1') {
+				AorB+='1';
+				AxorB+='1';	
+				notB+='0';
+			}
+			else if(strB[i]=='0') {
+				notB+='1';
+				AxorB+='0';	
+				AorB+='0';
+			}	
+			AandB+='0';
+			notA+='1';			
+		}	
+	}
+	cout<<AandB<<"\n"<<AorB<<"\n"<<AxorB<<"\n"<<notA<<"\n"<<notB;
+	return 0;
+}
