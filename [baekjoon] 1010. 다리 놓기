@@ -1,0 +1,27 @@
+#include <iostream>
+
+using namespace std;
+
+int T,N,M;
+int dp[35][35];
+
+long long combination(long long n,long long r){
+	if(dp[n][r]>0) return dp[n][r];
+	if(r==1) dp[n][r]=n;
+	else if(r==0 || n==r) dp[n][r]=1;
+	else dp[n][r]=combination(n-1,r-1)+combination(n-1,r);
+	
+	return dp[n][r];
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	cin>>T;
+	
+	for(int tc=1;tc<=T;tc++){
+		cin>>N>>M;
+		cout<<combination(M,N)<<"\n";
+	}
+	
+	return 0;
+}
