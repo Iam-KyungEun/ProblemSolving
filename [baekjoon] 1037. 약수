@@ -1,0 +1,17 @@
+#include <iostream>
+
+using namespace std;
+
+int N,A,minval,maxval;
+int main(){
+	cin>>N;
+	minval=987987987;
+	maxval=0;
+	for(int i=0;i<N;i++){
+		cin>>A;
+		if(A>maxval) maxval=A;
+		if(A<minval) minval=A;
+	}
+	cout<<minval*maxval;
+	return 0;
+}
