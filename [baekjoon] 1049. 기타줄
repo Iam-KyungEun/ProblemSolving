@@ -1,0 +1,21 @@
+#include <iostream>
+
+using namespace std;
+
+int main(){
+	int N,M,perPrice,packPrice;
+	cin>>N>>M;
+	int minpackPrice=987987987;
+	int minperPrice=987987987;
+	int money=0;
+	for(int i=0;i<M;i++){
+		cin>>packPrice>>perPrice;
+		if(packPrice<minpackPrice) minpackPrice=packPrice;
+		if(perPrice*6<minpackPrice) minpackPrice=perPrice*6;
+		if(perPrice<minperPrice) minperPrice=perPrice;
+	}
+	money=(N/6)*minpackPrice;
+	money+= (N%6)*minperPrice > minpackPrice ? minpackPrice : (N%6)*minperPrice;
+	cout<<money;
+	return 0;
+}
