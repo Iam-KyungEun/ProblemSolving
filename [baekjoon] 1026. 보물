@@ -1,0 +1,32 @@
+#include <iostream>
+#include <queue>
+
+using namespace std;
+
+priority_queue < int,vector<int>,greater<int> > A; //minheap;
+priority_queue < int,vector<int>,less<int> > B; //maxheap;
+
+
+int main(){
+	
+	int N,num1,sum=0;
+	cin>>N;
+	
+	for(int i=0;i<N;i++){
+		cin>>num1;
+		A.push(num1);
+	}
+
+	for(int i=0;i<N;i++){
+		cin>>num1;
+		B.push(num1);
+	}
+	while(!A.empty()){
+		sum+=A.top()*B.top();
+		A.pop();
+		B.pop();
+	}
+
+	cout<<sum;
+	return 0;
+}
