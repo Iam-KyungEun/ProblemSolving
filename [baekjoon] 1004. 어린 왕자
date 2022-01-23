@@ -1,0 +1,30 @@
+#include <iostream>
+
+using namespace std;
+
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	int T,startx,starty,destx,desty;
+	int numofPlanet,x,y,r;
+	int ans=0;
+	
+	cin>>T;
+	
+	for(int tc=0;tc<T;tc++){
+		cin>>startx>>starty>>destx>>desty;
+		cin>>numofPlanet;
+		ans=0;
+		for(int p=0;p<numofPlanet;p++){
+			cin>>x>>y>>r;
+			int sArea=(startx-x)*(startx-x)+(starty-y)*(starty-y);
+			int dArea=(destx-x)*(destx-x)+(desty-y)*(desty-y);
+			if((sArea<r*r) != (dArea<r*r)) ans++;
+		}
+		cout<<ans<<"\n";
+	}
+	
+	return 0;
+}
