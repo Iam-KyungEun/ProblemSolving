@@ -1,0 +1,19 @@
+#include <iostream>
+
+using namespace std;
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	int N,A,B,ans=0;
+	cin>>N>>A>>B;
+	while(1){
+		ans++;
+		A=(A+1)/2;
+		B=(B+1)/2;
+		if(A==B) break;
+	}
+	cout<<ans;
+	return 0;
+}
