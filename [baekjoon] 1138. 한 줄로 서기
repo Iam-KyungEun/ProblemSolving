@@ -1,0 +1,27 @@
+#include <iostream>
+
+using namespace std;
+
+int taller[11];
+int order[11];
+
+
+int main(){
+	int N;
+	cin>>N;
+	int cnt=0;
+	for(int i=1;i<=N;i++){
+		cin>>taller[i];
+		cnt=0;
+		for(int j=1;;j++){
+			if(order[j]==0) cnt++;
+			if(cnt>taller[i]){
+				order[j]=i;
+				break;
+			}
+		}
+	}
+
+	for(int i=1;i<=N;i++) cout<<order[i]<<" ";
+	return 0;
+}
