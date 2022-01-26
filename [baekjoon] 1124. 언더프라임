@@ -1,0 +1,43 @@
+#include <iostream>
+#include <math.h>
+#include <vector>
+
+using namespace std;
+
+bool prime_num[100001]={1,1,};
+vector <int> prime;
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	int A,B,ans=0;
+	
+	cin>>A>>B;
+	
+	for(int i=2;i<=B;i++){
+		if(!prime_num[i]){
+			prime.push_back(i);
+			for(int j=i+i;j<=B;j+=i){
+				if(prime_num[j]) continue;
+				prime_num[j]=true;
+			}
+		}
+	}
+
+	for(int i=A;i<=B;i++){
+		int cnt=0;
+		int num=i;
+		if(!prime_num[i]) continue;
+		for(int j=0;j<prime.size();j++){
+			while(num%prime[j]==0 && num>1){
+				num/=prime[j];
+				cnt++;
+			}
+			if(num<=1) break;
+		}
+		if(!prime_num[cnt]) ans++;
+	}
+	
+	cout<<ans;
+	return 0;
+}
