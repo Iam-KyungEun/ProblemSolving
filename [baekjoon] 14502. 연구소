@@ -1,0 +1,78 @@
+#include <iostream>
+#include <queue>
+#include <cstring>
+
+using namespace std;
+const int MAX = 10;
+
+int map[MAX][MAX];
+bool check[MAX][MAX];
+int startP[MAX][2];
+int N,M,cnt,totalblank,maxans,localcnt;
+int dy[4]={-1,1,0,0};
+int dx[4]={0,0,-1,1};
+
+
+queue < pair<int,int> > Q;
+
+void bfs(){
+	localcnt=0;
+	for(int i=0;i<cnt;i++){
+		Q.push(make_pair(startP[i][0],startP[i][1]));
+	}
+	while(!Q.empty()){
+		int curY=Q.front().first;
+		int curX=Q.front().second;
+		Q.pop();
+		for(int k=0;k<4;k++){
+			int ny=curY+dy[k];
+			int nx=curX+dx[k];
+			if(ny<N&& nx<M && ny>=0 && nx>=0 && map[ny][nx]==0 && !check[ny][nx]){
+				check[ny][nx]=true;
+				Q.push(make_pair(ny,nx));
+				localcnt++;
+			}
+		}
+	}
+}
+
+void makeWall(int y,int x,int idx){
+	if(idx>=3){
+		bfs();
+		memset(check,0,sizeof(check));
+		if(totalblank-3-localcnt>maxans) maxans = totalblank-3-localcnt;	
+	}
+	else{
+		for(int i=y;i<N;i++){
+			for(int j=x;j<M;j++){
+				if(map[i][j]==0){
+					map[i][j]=1;
+					if(j==M-1) {
+						x=0;
+						y=y+1;
+					}
+					makeWall(y,x,idx+1);
+					map[i][j]=0;
+				}
+			}
+		}
+	}	
+}
+
+int main(){
+	cin>>N>>M;
+	for(int i=0;i<N;i++){
+		for(int j=0;j<M;j++){
+			cin>>map[i][j];
+			if(map[i][j]==2){
+				startP[cnt][0]=i;
+				startP[cnt][1]=j;
+				cnt++;
+			}
+			else if(map[i][j]==0) totalblank++;
+		}
+	}	
+	makeWall(0,0,0);
+	cout<<maxans;
+	return 0;
+}
