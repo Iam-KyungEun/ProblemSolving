@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector <vector<int> > v;
+bool check[101];
+int cnt;
+
+void dfs(int node){
+	cnt++;
+	check[node]=true;
+	for(int i=0;i<v[node].size();i++){
+		int next = v[node][i];
+		if(!check[next]){
+			dfs(next);	
+		}
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	int N,couple,a,b;
+	cin>>N>>couple;
+	
+	v.assign(N+1,vector<int>(0));
+	
+	for(int i=0;i<couple;i++){
+		cin>>a>>b;
+		v[a].push_back(b);
+		v[b].push_back(a);
+	}
+	
+	dfs(1);
+	cout<<cnt-1;
+	return 0;
+}
