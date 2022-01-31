@@ -1,0 +1,47 @@
+#include <iostream>
+
+using namespace std;
+
+struct point{
+	int y;
+	int x;
+};
+
+point p[40];
+
+double maxarea=0;
+
+int abs(int a){
+	if(a>0) return a;
+	else return -a;
+}
+
+void getarea(int one,int two,int three){
+	double s = 0.5*abs((p[one].x*p[two].y+p[two].x*p[three].y+p[three].x*p[one].y)
+					-(p[one].x*p[three].y+p[two].x*p[one].y+p[three].x*p[two].y));
+					
+	if(s>maxarea) maxarea = s;
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	int N;
+	cin>>N;
+	for(int i=0;i<N;i++){
+		cin>>p[i].y>>p[i].x;
+	}
+	for(int i=0;i<N-2;i++){
+		for(int j=i+1;j<N-1;j++){
+			for(int k=j+1;k<N;k++){
+				getarea(i,j,k);
+			}
+		}
+	}
+	cout<<fixed;
+  cout.precision(9);
+
+	cout<<maxarea;
+	return 0;
+}
