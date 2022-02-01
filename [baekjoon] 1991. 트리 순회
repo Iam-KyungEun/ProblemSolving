@@ -1,0 +1,68 @@
+#include <iostream>
+
+using namespace std;
+
+const int MAX = 27;
+
+struct tree{
+	int leftchild;
+	int rightchild;
+	int parent;
+};
+
+tree T[MAX];
+
+void preorder(int node){
+	//본인, 왼,  오 
+	char alpha = node+'A';
+	cout<<alpha;
+	
+	if(T[node].leftchild!=-1)   preorder(T[node].leftchild);	
+	if(T[node].rightchild!=-1)	preorder(T[node].rightchild);
+}
+void inorder(int node){
+	//왼, 본인, 오 
+	if(T[node].leftchild!=-1) inorder(T[node].leftchild);	
+	
+	char alpha = node+'A';
+	cout<<alpha;
+
+	if(T[node].rightchild!=-1)	inorder(T[node].rightchild);	
+}
+void postorder(int node){
+	//왼 오 본인 
+	if(T[node].leftchild!=-1) postorder(T[node].leftchild);	
+	if(T[node].rightchild!=-1) postorder(T[node].rightchild);
+	
+	char alpha = node+'A';
+	cout<<alpha;
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	int N;
+	char p,l,r;
+	cin>>N;
+	T[0].parent=-1;
+	for(int i=0;i<N;i++){
+		cin>>p>>l>>r;
+		if(l!='.') {
+			T[p-'A'].leftchild=(l-'A');
+			T[l-'A'].parent=p-'A';
+		}
+		else T[p-'A'].leftchild=-1;
+		if(r!='.'){
+			T[p-'A'].rightchild=(r-'A');	
+			T[r-'A'].parent=p-'A';
+		}
+		else T[p-'A'].rightchild=-1;
+	}
+
+	preorder(0);
+	cout<<"\n";
+	inorder(0);
+	cout<<"\n";
+	postorder(0);
+	return 0;
+}
