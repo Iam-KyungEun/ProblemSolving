@@ -1,0 +1,63 @@
+#include <iostream>
+#include <queue>
+#include <cstring>
+
+using namespace std;
+
+const int MAX =55;
+
+int dy[8]={-1,1,0,0,-1,-1,1,1};
+int dx[8]={0,0,-1,1,-1,1,-1,1};
+
+int map[MAX][MAX];
+bool check[MAX][MAX];
+
+int w,h;
+
+void BFS(int y,int x){
+	check[y][x]=true;
+	queue < pair<int,int> > Q;
+	Q.push({y,x});
+	while(!Q.empty()){
+		int Y=Q.front().first;
+		int X=Q.front().second;
+		Q.pop();
+		
+		for(int i=0;i<8;i++){
+			int ny=Y+dy[i];
+			int nx=X+dx[i];
+			if(ny<h && nx<w && ny>=0 && nx>=0 && !check[ny][nx] && map[ny][nx]==1){
+				check[ny][nx]=true;
+				Q.push({ny,nx});
+			}
+		}	
+	}
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	while(1){
+		cin>>w>>h;
+		if(w==0 && h==0) break;
+		
+		for(int i=0;i<h;i++){
+			for(int j=0;j<w;j++){
+				cin>>map[i][j];
+			}
+		}
+		int cnt=0;
+		for(int i=0;i<h;i++){
+			for(int j=0;j<w;j++){
+				if(map[i][j]==1 && !check[i][j]) {
+					BFS(i,j);
+					cnt++;
+				}
+			}
+		}
+		memset(check,0,sizeof(check));
+		cout<<cnt<<"\n";
+	}
+	return 0;
+}
