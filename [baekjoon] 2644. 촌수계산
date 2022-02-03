@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+struct p{
+	int parent;
+	vector <int> children;
+};
+
+p family[101];
+
+int p1,p2;
+bool flag;
+bool check[101];
+
+void dfs(int person,int cnt){
+	if(flag) return;
+	check[person]=true;
+	if(person==p2){
+		cout<<cnt;
+		flag=true;
+		return;
+	}
+	int parent = family[person].parent;
+	if(!check[parent]) dfs(parent,cnt+1);
+	for(int i=0;i<family[person].children.size();i++){
+		int child=family[person].children[i];
+		if(!check[child]) dfs(child,cnt+1);
+	}
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	int n,m,a,b;
+	cin>>n>>p1>>p2>>m;
+
+	for(int i=0;i<m;i++){
+		cin>>a>>b;
+		family[b].parent=a;
+		family[a].children.push_back(b);
+	}
+	
+	dfs(p1,0);
+	if(!flag) cout<<-1;
+	
+	return 0;
+}
