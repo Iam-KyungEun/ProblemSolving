@@ -1,0 +1,41 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+int n;
+
+struct h{
+	int d;
+	int t;
+};
+
+vector <h> v;
+
+bool cmp(h &a, h &b){
+	if(a.t==b.t){
+		return a.d>b.d;
+	}
+	return a.t>b.t;
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	cin>>n;
+	
+	int d,t;
+	for(int i=0;i<n;i++){
+		cin>>d>>t;
+		v.push_back({d,t});
+	}
+	sort(v.begin(),v.end(),cmp);
+	int nextday=0;
+	for(int i=0;i<n-1;i++){
+		if(v[i].t-v[i].d < v[i+1].t) v[i+1].t=v[i].t-v[i].d;
+	}
+	cout<<v[n-1].t-v[n-1].d;
+	return 0;
+}
