@@ -17,7 +17,6 @@ int main(){
 		long long n=sqrt(dist);
 		if(dist==n*n) cout<<2*n-1;
 		else{
-			// dist<n*n 인 상황
 			if(dist>n*(n+1)) cout<<2*n+1;
 			else cout<<2*n; 
 		}
