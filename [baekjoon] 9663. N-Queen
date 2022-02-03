@@ -1,0 +1,38 @@
+#include <iostream>
+
+using namespace std;
+const int MAX =20;
+
+int N,cnt;
+bool horizon[MAX];
+bool diagtop[MAX];
+bool diagleft[MAX];
+
+void dfs(int idx){
+	if(idx>=N){
+		cnt++;
+	}	
+	else{
+		for(int i=0;i<N;i++){
+			if(!horizon[i] && !diagtop[idx+i] && !diagleft[idx-i]){
+				horizon[i]=true;
+				diagtop[idx+i]=true;
+				diagleft[idx-i]=true;
+				dfs(idx+1);
+				horizon[i]=false;
+				diagtop[idx+i]=false;
+				diagleft[idx-i]=false;
+			}
+		}
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+		
+	cin>>N;
+	
+	dfs(0);
+	cout<<cnt;
+	return 0;
+}
