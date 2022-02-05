@@ -1,0 +1,47 @@
+#include <iostream>
+#include <queue>
+
+using namespace std;
+
+int check[100001];
+int N,K,maxcnt=987987987,way;
+
+void bfs(int n){
+	check[n]=1;
+	queue <int> Q;
+	Q.push(n);
+	while(!Q.empty()){
+		int node=Q.front();
+		Q.pop();
+		if(node==K && maxcnt>=check[node]){
+			if(maxcnt==check[node]) way++;
+			else way=1;
+			maxcnt = check[node];
+			continue;
+		}
+		if(check[node]>maxcnt) continue;
+		if(node>0 && (check[node-1]==0 || check[node-1]>check[node])){
+			Q.push(node-1);
+			check[node-1]=check[node]+1;
+		}
+		if(node<100000 && (check[node+1]==0 || check[node+1]>check[node])){
+			Q.push(node+1);
+			check[node+1]=check[node]+1;
+		}
+		if(node*2<100001 && (check[node*2]==0 || check[node*2]>check[node])){
+			Q.push(node*2);
+			check[node*2]=check[node]+1;
+		}
+	}
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	cin>>N>>K;
+	
+	bfs(N);
+	cout<<maxcnt-1<<"\n"<<way;
+	return 0;
+}
