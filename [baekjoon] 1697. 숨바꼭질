@@ -1,0 +1,47 @@
+#include <iostream>
+#include <queue>
+
+using namespace std;
+
+bool check[100001];
+int N,K;
+
+void bfs(int n){
+	check[n]=true;
+	queue < pair<int,int> > Q;
+	Q.push({n,0});
+	while(!Q.empty()){
+		int node=Q.front().first;
+		int cnt=Q.front().second;
+		if(node==K){
+			cout<<cnt;
+			while(!Q.empty()) Q.pop();
+			break;
+		}
+		Q.pop();
+		if(node>0 && !check[node-1]){
+			Q.push({node-1,cnt+1});
+			check[node-1]=true;
+		}
+		if(node<100000 && !check[node+1]){
+			Q.push({node+1,cnt+1});
+			check[node+1]=true;
+		}
+		if(node*2<100001 && !check[node*2]){
+			Q.push({node*2,cnt+1});
+			check[node*2]=true;
+		}
+		
+	}
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	cin>>N>>K;
+	
+	bfs(N);
+	
+	return 0;
+}
