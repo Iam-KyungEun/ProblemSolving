@@ -1,0 +1,35 @@
+#include <iostream>
+#include <string>
+#include <set>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	int N,M;
+	cin>>N>>M;
+	string S;
+	
+	set <string> NeverHeard;
+	set <string>::iterator it;
+	vector <string> NeverHeardSeen;
+	
+	for(int i=0;i<N;i++){
+		cin>>S;
+		NeverHeard.insert(S);
+	}
+	
+	for(int j=0;j<M;j++){
+		cin>>S;
+		it = NeverHeard.find(S);
+		if(it!=NeverHeard.end()) NeverHeardSeen.push_back(S);
+	}
+	cout<<NeverHeardSeen.size()<<"\n";
+	sort(NeverHeardSeen.begin(),NeverHeardSeen.end());
+	for(int i=0;i<NeverHeardSeen.size();i++) cout<<NeverHeardSeen[i]<<"\n";
+	return 0;
+}
