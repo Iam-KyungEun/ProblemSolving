@@ -1,0 +1,32 @@
+#include <iostream>
+
+using namespace std;
+
+const int MAX = 130;
+
+void printstar(int y,int x,int N){
+	if(y/N%3==1 && x/N%3==1){
+		cout<<' ';
+	}
+	else if(N/3==0){
+		cout<<'*';
+	}
+	else printstar(y,x,N/3);
+}
+
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	int N;
+	cin>>N;
+	for(int i=0;i<N;i++){
+		for(int j=0;j<N;j++){
+			printstar(i,j,N);
+		}
+		cout<<'\n';
+	}
+	
+	return 0;
+}
