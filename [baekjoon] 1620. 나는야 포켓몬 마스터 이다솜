@@ -1,0 +1,42 @@
+#include <iostream>
+#include <string>
+#include <unordered_map>
+
+using namespace std;
+
+const int MAX = 25;
+
+bool check[MAX];
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	unordered_map <string,int> poketmon;
+	unordered_map <int,string> number;
+	int M,N;
+	string S;
+	cin>>N>>M;
+
+	for(int i=0;i<N;i++){
+		cin>>S;
+		poketmon.insert({S,i+1});
+		number.insert({i+1,S});
+	}
+	for(int i=0;i<M;i++){
+		cin>>S;
+		if(S[0]>='0' && S[0]<='9'){
+			int num=0;
+			for(int j=0;j<S.size();j++){
+				num+=S[j]-'0';
+				num*=10;
+			}
+			num/=10;
+			cout<<number[num]<<"\n";
+		}
+		else{
+			cout<<poketmon[S]<<"\n";
+		}
+	}
+	return 0;
+}
