@@ -1,0 +1,48 @@
+#include <iostream>
+#include <set>
+
+using namespace std;
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+  
+	multiset <int> dq;
+	multiset <int>::iterator it;
+  
+	int T,K,n;
+	char S;
+  
+	cin>>T;
+  
+	for(int tc=1;tc<=T;tc++){
+		cin>>K;
+    
+		for(int k=1;k<=K;k++){
+			cin>>S>>n;
+      
+			if(S=='I')  dq.insert(n);
+			else if(S=='D'){
+				if(dq.size()>0){
+					if(n==1)	{
+						it=dq.end();
+						--it;
+					}
+					else  it=dq.begin();
+					dq.erase(it);
+				}
+			}
+		}
+		if(dq.size()==0) cout<<"EMPTY"<<"\n";
+		else {
+			it=dq.end();
+			--it;
+			cout<<*it<<" ";
+			it=dq.begin();
+			cout<<*it<<"\n";
+
+			dq.clear();
+		}
+	}
+	return 0;
+}
