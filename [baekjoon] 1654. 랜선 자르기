@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+
+
+using namespace std;
+
+vector <long long> v;
+long long N;
+void BS(long long s,long long e){
+	if(s+1>=e){
+		cout<<s;
+		return;
+	}
+	else{
+		long long mid = (s+e)/2;
+		long long cnt=0;
+		for(int i=0;i<v.size();i++){
+			cnt+=(v[i]/mid);
+		}
+		if(cnt>=N) BS(mid,e);
+		else BS(s,mid);
+	}
+}
+
+int main(){
+	int K;
+	long long num,maxnum=0;
+	cin>>K>>N;
+	v.assign(K,0);
+	for(int i=0;i<K;i++){
+		cin>>num;
+		v.push_back(num);
+		if(num>maxnum) maxnum=num;
+	}
+	BS(0,maxnum+1);
+	
+	return 0;
+}
