@@ -1,0 +1,30 @@
+#include <iostream>
+#include <string>
+#include <set>
+#include <algorithm>
+
+using namespace std;
+
+struct cmp{
+	bool operator() (const string& a, const string& b) const{
+		if(a.size()==b.size()) return a<b;
+		else return a.size()<b.size();
+	}
+};
+
+int main(){
+	int N;
+	string S;
+	set <string,cmp> dict;
+	set <string>::iterator it;
+	cin>>N;
+	for(int i=0;i<N;i++){
+		cin>>S;
+		dict.insert(S);
+	}
+
+	for(it=dict.begin();it!=dict.end();++it){
+		cout<<*it<<"\n";
+	}
+	return 0;
+}
