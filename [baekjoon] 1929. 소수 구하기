@@ -9,9 +9,11 @@ int main(){
 	int N,M;
 	cin>>M>>N;
 	for(int i=2;i<=N;i++){
-		if(i>=M && !notprimenumber[i]) cout<<i<<'\n';
-		for(int j=i+i;j<=N;j+=i){
-			if(!notprimenumber[j]) notprimenumber[j]=true;
+		if(!notprimenumber[i]) {
+			if(i>=M) cout<<i<<'\n';
+			for(int j=i+i;j<=N;j+=i){
+				if(!notprimenumber[j]) notprimenumber[j]=true;
+			}
 		}
 	}
 	return 0;
