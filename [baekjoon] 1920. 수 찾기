@@ -1,0 +1,51 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+const int MAX = 100001;
+
+int arr[MAX];
+
+void BS(int s,int e,int val){
+	if(s+1>=e){
+		cout<<0;
+		return;
+	}
+	else{
+		int mid=(s+e)/2;
+		if(arr[mid]==val){
+			cout<<1;
+			return;
+		}
+		else if(arr[mid]>val) BS(s,mid,val);
+		else if(arr[mid]<val) BS(mid,e,val);
+	}
+}
+
+bool cmp(const int &a, const int &b){
+	return a<b;
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	int N,M;
+	int num;
+	
+	cin>>N;
+	for(int i=0;i<N;i++){
+		cin>>num;
+		arr[i]=num;	
+	}
+	sort(arr,arr+N,cmp);
+	cin>>M;
+	for(int i=0;i<M;i++){
+		cin>>num;
+		BS(-1,N,num);
+		cout<<'\n';
+	}
+
+	return 0;
+}
