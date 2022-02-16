@@ -1,0 +1,53 @@
+#include <iostream>
+#include <queue>
+#include <cstring>
+
+using namespace std;
+
+int p[10];
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	int T,priority,N,M;
+	cin>>T;
+	for(int tc=1;tc<=T;tc++){
+		
+		queue < pair<int,int> > Q;
+		cin>>N>>M;
+		int maxp=0;
+		for(int i=0;i<N;i++){
+			cin>>priority;
+			Q.push({i,priority});
+			p[priority]++;
+			if(priority>maxp) maxp=priority;
+		}
+		int order=0;
+		while(!Q.empty()){
+			int idx=Q.front().first;
+			int pty=Q.front().second;
+			Q.pop();
+			if(pty<maxp){
+				Q.push({idx,pty});
+			} 
+			else{
+				order++;
+				if(idx==M){
+					while(!Q.empty()) Q.pop();
+				}
+				p[pty]--;
+				if(p[pty]==0){
+					for(int k=pty-1;k>0;k--){
+						if(p[k]>0){
+							maxp=k;
+							break;
+						}
+					}
+				}
+			}
+		}
+		cout<<order<<'\n';
+		memset(p,0,sizeof(p));
+	}
+	return 0;
+}
