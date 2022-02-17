@@ -1,0 +1,39 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+int r,c;
+
+void divNconq(int Y,int X,int cnt,int N){
+
+	if(N<1){
+		cout<<cnt;
+		return;
+	}
+	
+	int TwoN1 = pow(2,N-1);
+	int TwoN2 = pow(2,2*N-2);
+	int TwoN3 = pow(2,2*N-1);
+	
+	//왼 Top 
+	if(r < Y+TwoN1 && c < X+TwoN1) divNconq(Y,X,cnt,N-1);
+	//오 Top
+	if(r < Y+TwoN1 && c >= X+TwoN1) divNconq(Y,X+TwoN1,cnt+TwoN2,N-1);
+	//왼 Bottom
+	if(r >= Y+TwoN1 && c< X+TwoN1) divNconq(Y+TwoN1,X,cnt+TwoN3,N-1);
+	//오 Bottom 
+	if(r >= Y+TwoN1 && c >= X+TwoN1) divNconq(Y+TwoN1,X+TwoN1,cnt+TwoN2*3,N-1);
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	int N;
+	cin>>N>>r>>c;
+	
+	divNconq(0,0,0,N);
+		
+	return 0;
+}
