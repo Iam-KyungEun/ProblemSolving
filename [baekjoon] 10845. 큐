@@ -1,0 +1,52 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+const int MAX = 10001;
+
+int Q[MAX];
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	int N,num,Qsize=0,Qfront=0,Qback=0;
+	string S;
+	cin>>N;
+	for(int i=0;i<N;i++){
+		cin>>S;
+		if(S=="push"){
+			cin>>num;
+			if(Qback>=MAX) Qback=0;
+			Q[Qback++]=num;
+			++Qsize;
+		}
+		else if(S=="front"){
+			if(Qsize==0) cout<<-1<<'\n';
+			else cout<<Q[Qfront]<<'\n';
+		}
+		else if(S=="size"){
+			cout<<Qsize<<'\n';
+		}
+		else if(S=="empty"){
+			if(Qsize==0) cout<<1<<'\n';
+			else cout<<0<<'\n';
+		}	
+		else if(S=="back"){
+			if(Qsize==0) cout<<-1<<'\n';
+			else{
+				if(Qback!=0) cout<<Q[Qback-1]<<'\n';
+				else cout<<Q[MAX-1]<<'\n';	
+			}
+		}
+		else if(S=="pop"){
+			if(Qsize==0) cout<<-1<<'\n'; 
+			else {
+				cout<<Q[Qfront]<<'\n';
+				--Qsize;
+				++Qfront;
+			}
+		}	
+	}
+	return 0;
+}
