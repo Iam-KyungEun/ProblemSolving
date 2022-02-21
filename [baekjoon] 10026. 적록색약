@@ -1,0 +1,70 @@
+#include <iostream>
+#include <queue>
+#include <string>
+using namespace std;
+
+const int MAX = 101;
+
+char map[MAX][MAX];
+bool check[MAX][MAX];
+bool check2[MAX][MAX];
+int dy[4]={-1,1,0,0};
+int dx[4]={0,0,-1,1};
+int N;
+
+void BFS(int y, int x, bool c[][MAX], bool ColorBlind){
+	queue < pair<int,int> > Q;
+	Q.push({y,x});
+	c[y][x]=true;
+	while(!Q.empty()){
+		int curY=Q.front().first;
+		int curX=Q.front().second;
+		
+		Q.pop();
+		for(int i=0;i<4;i++){
+			int ny = curY+dy[i];
+			int nx = curX+dx[i];
+			if(ny>=0 && ny<N && nx>=0 && nx<N && !c[ny][nx]){
+				if(map[ny][nx]==map[curY][curX]){
+					c[ny][nx]=true;
+					Q.push({ny,nx});
+				}
+				else if(ColorBlind==true && (map[curY][curX]=='R' || map[curY][curX]=='G') && (map[ny][nx]=='R' || map[ny][nx]=='G')){
+					c[ny][nx]=true;
+					Q.push({ny,nx});
+				}		
+			}
+		}
+	}
+}
+
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	string S;
+	cin>>N;
+	for(int i=0;i<N;i++){
+		cin>>S;
+		for(int j=0;j<S.size();j++){
+			map[i][j]=S[j];
+		}
+	}
+	int ColorBlind=0;
+	int nonBlind=0;
+	for(int i=0;i<N;i++){
+		for(int j=0;j<N;j++){
+			if(!check[i][j]){
+				BFS(i,j,check,false);
+				nonBlind++;
+			}
+			if(!check2[i][j]){
+				BFS(i,j,check2,true);
+				ColorBlind++;
+			}
+		}
+	}
+	
+	cout<<nonBlind<<' '<<ColorBlind;
+}
