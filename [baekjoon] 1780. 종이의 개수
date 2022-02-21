@@ -1,0 +1,46 @@
+#include <iostream>
+
+using namespace std;
+
+const int MAX = 2200;
+int count[3];
+int paper[MAX][MAX];
+
+void divconq(int y,int x,int N){
+	if(N<1) return;
+	int val= paper[y][x];
+	for(int i=y;i<y+N;i++){
+		for(int j=x;j<x+N;j++){
+			if(paper[i][j]!=val){
+				
+				divconq(y,      x,      N/3);
+				divconq(y,      x+N/3,  N/3);
+				divconq(y,      x+N*2/3,N/3);
+				divconq(y+N/3,  x,      N/3);
+				divconq(y+N/3,  x+N/3,  N/3);
+				divconq(y+N/3,  x+N*2/3,N/3);
+				divconq(y+N*2/3,x,      N/3);
+				divconq(y+N*2/3,x+N/3,  N/3);
+				divconq(y+N*2/3,x+N*2/3,N/3);
+				return;
+			}
+		}
+	}
+	count[val+1]++;
+	return;
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	int N;
+	cin>>N;
+	for(int i=0;i<N;i++){
+		for(int j=0;j<N;j++){
+			cin>>paper[i][j];
+		}
+	}
+	
+	divconq(0,0,N);
+	for(int i=0;i<3;i++) cout<<count[i]<<'\n';
+}
