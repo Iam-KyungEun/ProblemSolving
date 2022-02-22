@@ -1,0 +1,73 @@
+#include <iostream>
+#include <deque>
+#include <string>
+
+using namespace std;
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	string p;
+	string int_arr;
+	deque <int> dq;
+	int n,T;
+	char card;
+	cin>>T;
+	for(int tc=1;tc<=T;tc++){
+		cin>>p>>n>>int_arr;
+		bool f_error=false;
+		bool odd_turn=false;
+		int num=0;
+		for(int i=1;i<int_arr.length();i++){
+			if(int_arr[i]>='0' && int_arr[i]<='9'){
+				num+=(int_arr[i]-'0');
+				num*=10;
+			}
+			else if(int_arr[i]==',' || int_arr[i]==']'){
+				num/=10;
+				if(num>0) dq.push_back(num);
+				num=0;
+			}
+		}
+		for(int i=0;i<p.length();i++){
+			if(p[i]=='R'){
+				if(odd_turn) odd_turn=false;
+				else odd_turn=true;
+			}
+			else if(p[i]=='D'){
+				if(!dq.empty()){
+					if(odd_turn) dq.pop_back();
+					else dq.pop_front();
+				}
+				else{
+					f_error=true;
+					break;
+				}
+			}
+		}
+		if(!f_error){
+			cout<<'[';
+			if(!dq.empty()){
+				if(odd_turn){
+					for(int i=dq.size()-1;i>0;i--){
+						cout<<dq[i]<<',';
+					}
+					cout<<dq.front();
+				}
+				else{
+					for(int i=0;i<dq.size()-1;i++){
+						cout<<dq[i]<<',';
+					}	
+					cout<<dq.back();
+				}
+				dq.clear();
+			}
+			cout<<']'<<'\n';
+		}
+		else if(f_error){
+			cout<<"error\n";
+		}
+	}
+	return 0;
+}
