@@ -1,0 +1,59 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+const int MAX = 50;
+
+char op[MAX];
+int num_arr[MAX];
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	string S;
+	getline(cin,S);
+	
+	int num=0,ans=0;
+	int num_idx=0, op_idx=0;
+	bool f_start=false;
+	for(int i=0;i<S.size();i++){
+		if(!f_start && S[i]=='0') continue;
+		if(S[i]>='0' && S[i]<='9'){
+			if(!f_start) f_start=true;
+			else num*=10;
+			num+=(S[i]-'0');
+		}
+		else if(S[i]=='+'){
+			num_arr[num_idx++]=num;
+			op[op_idx++]='+';
+			num=0;
+		}
+		else if(S[i]=='-'){
+			num_arr[num_idx++]=num;
+			op[op_idx++]='-';
+			num=0;
+		}
+	}
+	num_arr[num_idx]=num;
+	int sum=num_arr[0];
+	bool f_minus = false;
+	for(int i=0;i<op_idx;i++){
+		if(op[i]=='-'){
+			if(!f_minus) {
+				ans+=sum;
+				f_minus=true;
+			}
+			else ans-=sum;
+			sum=num_arr[i+1];
+		}	
+		else{
+			sum+=num_arr[i+1];
+		}
+	}
+	if(!f_minus) ans+=sum;
+	else ans-=sum;
+	
+	cout<<ans;
+}
