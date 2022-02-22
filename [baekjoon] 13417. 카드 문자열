@@ -1,0 +1,31 @@
+#include <iostream>
+#include <deque>
+
+using namespace std;
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	deque <char> dq;
+	int N,T;
+	char card;
+	cin>>T;
+	for(int tc=1;tc<=T;tc++){
+		cin>>N;	
+		for(int i=0;i<N;i++){
+			cin>>card;
+			if(dq.empty()) dq.push_back(card);
+			else{
+				if(card<=dq.front()) dq.push_front(card);
+				else dq.push_back(card);
+			}
+		}
+		for(int i=0;i<dq.size();i++){
+			cout<<dq[i];
+		}
+		cout<<'\n';
+		dq.clear();
+	}
+	return 0;
+}
