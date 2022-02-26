@@ -1,0 +1,44 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	int N,M;
+	string str;
+	cin>>N>>M>>str;
+	str.push_back('E');
+	
+	bool flag=false;
+	int startp=0, ans=0;
+	for(int i=0;i<str.size();i++){
+		if(!flag && str[i]=='I'){
+			flag=true;
+			startp=i;
+		}
+		else if(flag && (str[i]==str[i-1] || str[i]=='E')){
+			if(str[i-1]=='I'){				
+				if(i-startp>=N*2+1){
+					int O_cnt=(i-startp)/2;
+					ans+=(O_cnt-N+1);
+				}
+				flag=true;
+				startp=i;
+			}
+			else{
+				if(i-1-startp>=N*2+1){
+					int O_cnt=(i-1-startp)/2;
+					ans+=(O_cnt-N+1);
+				}
+				flag=false;
+			}
+		}
+	}
+	
+	cout<<ans;
+	
+	return 0;
+}
