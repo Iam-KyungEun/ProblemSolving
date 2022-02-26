@@ -1,0 +1,44 @@
+#include <iostream>
+#include <set>
+
+using namespace std;
+
+int abs(int a){
+	if(a<0) return -a;
+	else return a;
+}
+
+struct cmp{
+	bool operator() (const int& a, const int& b) const{
+		if(abs(a)==abs(b)){
+			return a<b;
+		}
+		return abs(a)<abs(b);
+	}
+};
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	multiset <int, cmp> ms;
+	multiset <int>::iterator it;
+	int N,num;
+	cin>>N;
+
+	for(int i=0;i<N;i++){
+		cin>>num;
+		if(num!=0){
+			ms.insert(num);
+		}
+		else{
+			if(ms.empty()) cout<<0<<'\n';
+			else {
+				it=ms.begin();
+				cout<<(*it)<<'\n';
+				ms.erase(it);
+			}
+		}
+	}
+	return 0;
+}
