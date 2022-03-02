@@ -1,0 +1,32 @@
+#include <iostream>
+
+using namespace std;
+
+int getGCD(int A,int B){
+	if(B>A){
+		int temp=B;
+		B=A;
+		A=temp;
+	}
+	
+	int r=A%B;
+	while(r!=0){
+		A=B;
+		B=r;
+		r=A%B;
+	}
+	return B;
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	int A,B;
+	cin>>A>>B;
+	
+	int gcd = getGCD(A,B);
+	cout<<gcd<<'\n'<<A*B/gcd;
+	
+	return 0;
+}
