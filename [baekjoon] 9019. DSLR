@@ -1,0 +1,84 @@
+#include <iostream>
+#include <queue>
+#include <cstring>
+#include <string>
+
+using namespace std;
+const int MAX = 10000;
+
+int check[MAX];
+
+int D(int num){
+	return (num*2)%10000;
+}
+
+int S(int num){
+	if(num==0) return 9999;
+	else return num-1;
+}
+
+int L(int num){
+	int temp=num/1000;
+	num%=1000;
+	num*=10;
+	return num+temp;
+}
+
+int R(int num){
+	int temp=num%10;
+	num/=10;
+	return temp*1000+num;
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	int n,A,B;
+
+	queue < pair<int,string> > Q;
+	
+	cin>>n;
+	
+	for(int i=0;i<n;i++){
+		cin>>A>>B;
+		
+		Q.push({A,""});
+		check[A]=true;
+		
+		while(!Q.empty()){
+			int num=Q.front().first;
+			string cmd=Q.front().second;
+			
+			if(num==B){
+				cout<<cmd<<'\n';
+				while(!Q.empty()) Q.pop();
+				break;
+			}
+			Q.pop();
+			int new_num = D(num);
+			if(!check[new_num]) {
+				Q.push({new_num,cmd+'D'});
+				check[new_num]=true;
+			}
+			new_num = S(num);
+			if(!check[new_num]) {
+				Q.push({new_num,cmd+'S'});
+				check[new_num]=true;
+			}
+			new_num = L(num);
+			if(!check[new_num]) {
+				Q.push({new_num,cmd+'L'});
+				check[new_num]=true;
+			}
+			new_num = R(num);
+			if(!check[new_num]) {
+				Q.push({new_num,cmd+'R'});
+				check[new_num]=true;
+			}
+		}
+		memset(check,0,sizeof(check));
+	}
+
+	return 0;
+}
