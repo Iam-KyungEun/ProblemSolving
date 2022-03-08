@@ -1,0 +1,27 @@
+#include <iostream>
+
+using namespace std;
+
+const int MAX = 1001;
+
+int dp[MAX];
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	int N;
+	cin>>N;
+	dp[1]=1;
+	dp[2]=2;
+	dp[3]=1;
+	for(int i=4;i<=N;i++){
+		// 돌을 1개나 3개 뺐을 때, 이긴 사람이 SK이면, 현재 승자는 CY이다 
+		if(dp[i-1]==1 || dp[i-3]==1) dp[i]=2;
+		else dp[i]=1;
+	}
+	if(dp[N]==1) cout<<"SK";
+	else cout<<"CY";
+	
+	return 0;
+}
