@@ -1,0 +1,30 @@
+#include <iostream>
+
+using namespace std;
+
+const int MAX = 10001;
+
+double dp[MAX];
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	int N;
+	double num,maxval=0;
+	cin>>N;
+	
+	for(int i=1;i<=N;i++){
+		cin>>num;
+		if(dp[i-1]<1)	dp[i]=num;
+		else	dp[i]=dp[i-1]*num;
+		
+		if(dp[i]>maxval) maxval=dp[i];
+	}
+	
+	cout.setf(ios::fixed);
+	cout.precision(3);
+	cout<<maxval;
+	
+	return 0;
+}
