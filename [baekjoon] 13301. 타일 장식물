@@ -1,0 +1,31 @@
+#include <iostream>
+
+using namespace std;
+
+const int MAX = 81;
+
+long long sum[MAX];
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	int N;
+	cin>>N;
+	
+	long long Val=1,prevVal=1;
+	sum[1]=4;
+	sum[2]=6;
+	
+	long long temp;
+	for(int i=3;i<=N;i++){
+		temp=prevVal;
+		prevVal=Val;
+		Val+=temp;
+
+		sum[i]=sum[i-1]+2*Val;
+	}
+	cout<<sum[N];
+	
+	return 0;
+}
