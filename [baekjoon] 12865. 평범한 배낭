@@ -1,0 +1,36 @@
+#include <iostream>
+
+using namespace std;
+
+const int maxW = 100001;
+const int maxN = 101;
+
+struct items{
+	int value;
+	int weight;
+};
+
+int dp[maxW];
+struct items item[maxN];
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	int N,K;
+	cin>>N>>K;
+		
+	for(int i=1;i<=N;i++){
+		cin>>item[i].weight>>item[i].value;
+	}
+	
+	for(int i=1;i<=N;i++){
+		for(int w=K;w>=1;w--){
+			if(item[i].weight <= w) {
+				dp[w] = max (dp[w], dp[w - item[i].weight] + item[i].value);
+			}
+		}
+	}
+	
+	cout<<dp[K];
+	return 0;
+}
