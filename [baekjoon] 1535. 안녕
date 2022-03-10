@@ -1,0 +1,34 @@
+#include <iostream>
+
+using namespace std;
+
+const int EMAX= 101;
+const int PMAX= 21;
+
+int dp[EMAX][PMAX];
+int L[PMAX];  // 체력 
+int J[PMAX];  // 기쁨 
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	int N;
+	cin>>N;
+	for(int i=1;i<=N;i++){
+		cin>>L[i]; 
+	}
+	for(int i=1;i<=N;i++){
+		cin>>J[i];
+	}
+	
+	for(int i=1;i<=N;i++){
+		for(int j=1;j<=100;j++){
+			if(j-L[i]>0)	dp[j][i]=max(dp[j][i-1], dp[j-L[i]][i-1]+J[i]);
+			else dp[j][i]=dp[j][i-1];
+		}
+	}
+	cout<<dp[100][N];
+
+	return 0;
+}
