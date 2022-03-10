@@ -1,0 +1,28 @@
+#include <iostream>
+
+using namespace std;
+
+const int MAX= 1001;
+
+int dp[MAX];
+int num[MAX];
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	int N;
+	int maxsum=0;
+	cin>>N;
+	for(int i=0;i<N;i++){
+		cin>>num[i]; 
+		dp[i]=num[i];
+		for(int j=0;j<i;j++){
+			if(num[i]>num[j] && dp[i]<dp[j]+num[i]) dp[i]=dp[j]+num[i];
+		}
+		if(maxsum<dp[i]) maxsum=dp[i];
+	}
+	cout<<maxsum;
+	
+	return 0;
+}
