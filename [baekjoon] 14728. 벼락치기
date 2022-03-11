@@ -1,0 +1,29 @@
+#include <iostream>
+
+using namespace std;
+
+const int TMAX = 10001;
+const int MAX = 101;
+
+int dp[TMAX];
+int K[MAX];
+int S[MAX];
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	int N,T;
+	cin>>N>>T;
+	for(int i=1;i<=N;i++){
+		cin>>K[i]>>S[i];
+	}
+	
+	for(int i=1;i<=N;i++){
+		for(int j=T;j>0;j--){
+			if(K[i]<=j) dp[j]=max(dp[j],dp[j-K[i]]+S[i]);
+		}
+	}
+	cout<<dp[T];
+	return 0;
+}
