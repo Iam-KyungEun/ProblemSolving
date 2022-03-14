@@ -1,0 +1,39 @@
+#include <iostream>
+
+using namespace std;
+
+const int MAX = 550;
+
+char map[MAX][MAX];
+int window[5];
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	int N,M;
+	cin>>M>>N;
+
+	for(int i=0;i<M*4+M+1;i++){
+		for(int j=0;j<N*4+N+1;j++){
+			cin>>map[i][j];			
+		}
+	}
+	
+	int blind=0;
+	for(int j=1;j<N*4+N+1;j++){
+		if(j%5==1){
+			for(int i=1;i<M*4+M+1;i++){
+				if(i%5==0){
+					window[blind]++;
+					blind=0;
+				}
+				else{
+					if(map[i][j]=='*') blind++;
+				}
+			}
+		}
+	}
+	for(int i=0;i<5;i++) cout<<window[i]<<' ';
+	return 0;
+}
