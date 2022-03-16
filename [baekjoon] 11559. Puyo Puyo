@@ -1,0 +1,97 @@
+#include <iostream>
+#include <queue>
+#include <cstring>
+
+using namespace std;
+
+const int MAX = 301;
+
+char map[12][6];
+bool check[12][6];
+
+int dy[4]={-1,1,0,0};
+int dx[4]={0,0,-1,1};
+
+void sortarr(){
+	for(int j=0;j<6;j++){
+		int cnt=0;
+		for(int i=0;i<12;i++){
+			if(map[i][j]=='.') cnt++;
+			else{
+				if(cnt>0) {
+					map[i-cnt][j]=map[i][j];
+					map[i][j]='.';
+				}
+			}
+		}
+	}
+}
+
+int BFS(int y,int x){
+	char val = map[y][x];
+	int cnt=1;
+	queue < pair<int,int> > Q;
+	queue < pair<int,int> > del;
+	Q.push({y,x});
+	del.push({y,x});
+	check[y][x]=true;
+	
+	while(!Q.empty()){
+		int curY=Q.front().first;
+		int curX=Q.front().second;
+		Q.pop();
+		for(int i=0;i<4;i++){
+			int ny=curY+dy[i];
+			int nx=curX+dx[i];
+			
+			if(ny>=0 && nx>=0 && ny<12 && nx<6 && !check[ny][nx] && map[ny][nx]==val){
+				cnt++;
+				check[ny][nx]=true;
+				Q.push({ny,nx});
+				del.push({ny,nx});
+			}
+		}
+	}
+	while(!del.empty()){
+		int y=del.front().first;
+		int x=del.front().second;
+		if(cnt>=4)	map[y][x]='.';
+		check[y][x]=false;
+		del.pop();
+	}
+	return cnt;	
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	int ans=0;
+	
+	for(int i=11;i>=0;i--){
+		for(int j=0;j<6;j++){
+			cin>>map[i][j];
+		}
+	}
+	
+	while(1){	
+		bool flag=false;
+		for(int i=0;i<12;i++){
+			for(int j=0;j<6;j++){
+				if(map[i][j]!='.' && !check[i][j]){
+					if(BFS(i,j) >= 4){
+						flag=true;
+					}
+				}
+			}
+		}
+		if(!flag){
+			cout<<ans;
+			return 0;
+		}
+		ans++;
+		sortarr();
+	}
+	
+	return 0;
+}
