@@ -1,0 +1,47 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+const int MAX = 10;
+int N,M;
+int arr[MAX];
+int result[MAX];
+bool check[MAX];
+
+void dfs(int idx,int cnt){
+	if(idx>=M){
+		for(int i=0;i<idx;i++){
+			cout<<result[i]<<' ';
+		}
+		cout<<'\n';
+	}
+	else {
+		for(int i=cnt;i<N;i++){
+			if(idx>0 && result[idx-1]>arr[i]) continue;
+			result[idx]=arr[i];
+			dfs(idx+1,cnt);
+		}
+	}
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	cin>>N>>M;
+	int cnt=0;
+	for(int i=0;i<N;i++){
+		cin>>arr[i];
+		if(check[arr[i]]){
+			arr[i]=0;
+			cnt++;
+		}
+		else check[arr[i]]=true;
+	}
+	sort(arr,arr+N);
+	
+	dfs(0,cnt);
+	
+	return 0;
+}
