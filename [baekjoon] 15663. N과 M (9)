@@ -1,0 +1,61 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <set>
+
+using namespace std;
+
+const int MAX = 10;
+int N,M;
+int arr[MAX];
+bool check[MAX];
+
+set < vector<int> > s;
+
+void dfs(int idx, vector <int> result){
+	if(idx>=M){
+		s.insert(result);
+	}
+	else {
+		for(int i=0;i<N;i++){
+			if(!check[i]){
+				check[i]=true;
+				result.push_back(arr[i]);
+				dfs(idx+1,result);	
+				result.pop_back();
+				check[i]=false;
+			}
+		}
+	}
+}
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	cin>>N>>M;
+	for(int i=0;i<N;i++){
+		cin>>arr[i];
+	}
+	vector <int> v;
+	sort(arr,arr+N);
+	dfs(0,v);
+	
+	set <vector<int>>::iterator it;
+	
+	for(it=s.begin();it!=s.end();++it){
+		for(int i=0;i<(*it).size();i++){
+			cout<<(*it)[i]<<' ';
+		}
+		cout<<'\n';
+	}
+  
+  // auto를 이용해서 풀면 더 쉬움
+//	for(auto elem: s){
+//		for(int i=0;i<elem.size();i++){
+//			cout<<elem[i]<<' ';
+//		}
+//		cout<<'\n';
+//	}
+	return 0;
+}
