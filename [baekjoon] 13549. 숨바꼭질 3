@@ -1,0 +1,42 @@
+#include <iostream>
+#include <queue>
+
+using namespace std;
+
+const int MAX = 100001;
+
+int dist[MAX];
+int N,M;
+
+void BFS(int start){
+	dist[start]=1;
+	queue <int> Q;
+	Q.push(start);
+	while(!Q.empty()){
+		int current=Q.front();
+		Q.pop();
+		
+		if(current*2 < MAX && (!dist[current*2] || dist[current*2] > dist[current])) {
+			dist[current*2] = dist[current];
+			Q.push(current*2);
+		}
+		if(current+1 < MAX && (!dist[current+1] || dist[current+1] > dist[current]+1)) {	
+			dist[current+1]=dist[current]+1;
+			Q.push(current+1);
+		}
+		if(current-1 >= 0 && (!dist[current-1] || dist[current-1] > dist[current]+1)){
+			dist[current-1]=dist[current]+1;
+			Q.push(current-1);
+		}
+	}
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	cin>>N>>M;
+	
+	BFS(N);
+	cout<<dist[M]-1;
+	return 0;
+}
