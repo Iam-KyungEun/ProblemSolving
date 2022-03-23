@@ -1,0 +1,49 @@
+#include <iostream>
+
+using namespace std;
+
+#define INF 987987987
+const int MAX = 101;
+
+int dist[MAX][MAX];
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	int n,m,a,b,c;
+	cin>>n>>m;
+	
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=n;j++){
+			dist[i][j]=INF;
+		}
+	}
+	
+	for(int i=0;i<m;i++){
+		cin>>a>>b>>c;
+		if(dist[a][b]>c) dist[a][b] = c;
+	}
+
+	for(int i=1;i<=n;i++){ // i 도시를 거쳐서 
+		for(int j=1;j<=n;j++){  // j 도시에서 출 발 
+			if(i==j) continue;
+			for(int k=1;k<=n;k++){  // k 도시로 가는 경로  
+				if(dist[i][k] != INF && dist[j][i] != INF){
+					dist[j][k] = min(dist[j][k], dist[j][i]+dist[i][k]);
+				} 
+			}
+		}
+	}
+	
+	
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=n;j++){
+			if(dist[i][j]==INF || i==j) cout<<0<<' ';
+			else cout<<dist[i][j]<<' ';
+		}
+		cout<<'\n';
+	}
+	
+	return 0;
+}
