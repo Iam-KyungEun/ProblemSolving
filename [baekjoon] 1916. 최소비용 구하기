@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+const int MAX = 1001;
+const int INF = 987987987;
+
+int N,M;
+int d[MAX];
+bool check[MAX];
+
+vector < pair<int,int> > graph[MAX];
+
+struct cmp {
+	bool operator()(pair<int,int> a, pair<int,int> b) {
+		if(a.second==b.second) return a.first<b.first;
+		return a.second<b.second;
+	}
+};
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	int u,v,w;
+	int departureCity,arrivalCity;
+
+	cin>>N>>M;
+		
+	for(int i=0;i<M;i++){
+		cin>>u>>v>>w;
+		graph[u].push_back({v,w});
+	}
+	
+	cin>>departureCity>>arrivalCity;
+	
+	for(int i=1;i<=N;i++) d[i]=INF;
+	
+	priority_queue <pair<int,int>, vector< pair<int,int> >,cmp> pq;
+	pq.push({departureCity,0});
+	d[departureCity]=0;
+
+	while(!pq.empty()){
+		int vertex = pq.top().first;
+		int dist = -pq.top().second;
+		
+		pq.pop();
+		
+		if(d[vertex]<dist) continue;
+		
+		for(int i=0;i<graph[vertex].size();i++){
+			int next = graph[vertex][i].first;
+			int nextdist = dist + graph[vertex][i].second;
+			if(nextdist<d[next]){
+				d[next]=nextdist;
+				pq.push({next,-nextdist});
+			}
+		}
+	}
+	cout<<d[arrivalCity];
+	return 0;
+}
