@@ -1,0 +1,58 @@
+#include <iostream>
+
+using namespace std;
+const int MAX = 22;
+
+int map[MAX][MAX];
+int sum[MAX][MAX];
+int team1[MAX/2],team2[MAX/2];
+bool check[MAX];
+int N,minval=987987987;
+
+
+int abs(int a,int b){
+	if(a-b>0) return a-b;
+	else return b-a;
+}
+
+void dfs(int cnt){
+	if(cnt>=N/2){
+		int num=0,sum1=0,sum2=0;
+		for(int i=1;i<=N;i++){
+			if(!check[i])	team2[num++]=i;
+		}
+		for(int i=0;i<N/2-1;i++){
+			for(int j=i+1;j<=N/2-1;j++){
+				sum1=sum1+map[team1[i]][team1[j]]+map[team1[j]][team1[i]];
+				sum2=sum2+map[team2[i]][team2[j]]+map[team2[j]][team2[i]];
+			}
+		}
+		int absval=abs(sum1,sum2);
+		if(absval<minval) minval=absval;
+	}
+	else{
+		for(int i=2;i<=N;i++){
+			if(!check[i]){
+				if(cnt>0 && team1[cnt-1]>i) continue;
+				check[i]=true;
+				team1[cnt]=i;
+				dfs(cnt+1);
+				check[i]=false;
+			}
+		}
+	}
+}
+
+int main(){
+	cin>>N;
+	for(int i=1;i<=N;i++){
+		for(int j=1;j<=N;j++){
+			cin>>map[i][j];
+		}
+	}
+	team1[0]=1;
+	check[1]=true;
+	dfs(1);
+	cout<<minval;
+	return 0;
+}
