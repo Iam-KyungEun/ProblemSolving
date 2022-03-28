@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+using namespace std;
+
+bool check[11];
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	vector <int> v;
+	int n,a,b;
+	cin>>n;
+	
+	for(int i=0;i<n;i++){
+		cin>>a>>b;
+		
+		int num=a%10;
+		if(num==0) num=10;
+	
+		check[num]=true;
+		v.push_back(num);
+		
+		for(int j=1;j<=b;j++){
+			num*=a;
+			num%=10;
+			if(num==0) num=10;
+			if(check[num]){
+				break;
+			}
+			else{
+				check[num]=true;
+				v.push_back(num);
+			}
+		}
+		
+		int remainder = b % v.size();
+		
+		if(remainder == 0)	cout<<v.back()<<'\n';
+		else	cout<<v[remainder-1]<<'\n';
+		
+		memset(check,0,sizeof(check));
+		vector <int>().swap(v);
+	}
+	
+	return 0;
+}
