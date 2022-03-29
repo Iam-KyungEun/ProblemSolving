@@ -1,0 +1,83 @@
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <algorithm>
+
+using namespace std;
+
+int dict[200000][26];
+int puzzle[26];
+int alpha[26];
+bool check[26];
+
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	string str;
+	bool flag=false;
+	int cnt=0;
+	while(1){
+		cin>>str;
+		if(str=="-") flag=true;	
+		else if(str=="#") break;
+		else{
+			if(!flag) {
+				for(int i=0;i<str.length();i++){
+					dict[cnt][str[i]-'A']++;
+				}
+				cnt++;
+			}	
+			else {
+				for(int i=0;i<str.length();i++){
+					puzzle[str[i]-'A']++;
+				}
+				
+				for(int j=0;j<cnt;j++){
+					bool possi=true;
+					for(int i=0;i<26;i++){
+						if(puzzle[i]<dict[j][i]){
+							possi=false;
+							break;
+						}
+						else if(dict[j][i]>0) check[i]=true;
+					}
+					if(!possi) memset(check,0,sizeof(check));
+					else {
+						for(int i=0;i<26;i++) {
+							if(check[i]) alpha[i]++;
+						}
+						memset(check,0,sizeof(check));
+					}
+				}
+				string A="";
+				string B="";
+				int maxval=0, minval=200001;
+				for(int i=0;i<26;i++) {
+					if(puzzle[i]==0) continue;
+					if(alpha[i] > maxval) {
+						maxval=alpha[i];
+						B.clear();
+						B.push_back(i+'A');
+					} else if(alpha[i]==maxval) {
+						B.push_back(i+'A');
+					}
+					if(alpha[i] < minval) {
+						minval=alpha[i];
+						A.clear();
+						A.push_back(i+'A');
+					} else if(alpha[i] == minval) {
+						A.push_back(i+'A');	
+					}
+				}
+				
+				cout<<A<<" "<<minval<<" "<<B<<" "<<maxval<<"\n";
+				memset(alpha,0,sizeof(alpha));
+				memset(puzzle,0,sizeof(puzzle));
+			}
+		}
+	}
+
+	return 0;
+}
