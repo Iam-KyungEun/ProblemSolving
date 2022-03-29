@@ -1,0 +1,36 @@
+#include <iostream>
+
+using namespace std;
+
+const int MAX = 8;
+
+char board[MAX][MAX];
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+	int n,cycle=0,nextnum=0,num=0;
+	
+	cin>>n;
+	num=n;
+	while(1){
+		cycle++;
+		if(num<10){
+			nextnum=num;
+			num=num*10+num;
+		}
+		else{
+			nextnum=(num/10)+(num%10);
+			nextnum%=10;
+			num%=10;
+			num=num*10+nextnum;
+		}
+		if(num==n){
+			cout<<cycle;
+			break;
+		}
+	}
+		
+	return 0;
+}
