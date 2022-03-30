@@ -1,0 +1,20 @@
+#include <iostream>
+
+using namespace std;
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	int X;
+	cin>>X;
+	
+	int i=1;
+	for(i;i*(i+1)/2<X;i++){}
+	
+	int s=(i-1)*i/2;
+	
+	if(i%2==0) cout<<(X-s)<<"/"<<i+1-(X-s);
+	else cout<<i+1-(X-s)<<"/"<<(X-s);
+	return 0;
+}
