@@ -1,0 +1,33 @@
+#include <iostream>
+
+using namespace std;
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	int N,m,M,T,R;
+	
+	cin>>N>>m>>M>>T>>R;
+	
+	int X=m;
+	int t=0;
+	int fitTime=0;
+	while(1){
+		if(X+T <= M){  // 운동 할 수 있으면 운동 해  
+			X+=T;
+			fitTime++;
+		} else{  // 운동 할 수 없어 
+			if(X==m){
+				cout<<-1;
+				return 0;
+			}
+			X-=R;
+			if(X<m) X=m;
+		}
+		t++;
+		if(fitTime==N) break;
+	}
+	cout<<t;
+	return 0;
+}
