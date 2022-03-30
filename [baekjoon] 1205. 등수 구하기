@@ -1,0 +1,32 @@
+#include <iostream>
+
+using namespace std;
+
+const int MAX = 51;
+
+int score[MAX];
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	int N,newScore,P;
+	bool yet=false;
+	int ans=-1;
+	cin>>N>>newScore>>P;
+	for(int i=1;i<=N;i++){
+		cin>>score[i];
+		if(!yet && (score[i]==newScore || score[i]<newScore)){
+			yet=true;
+			ans=i;
+		}
+		if(yet && score[i]==newScore && i>=P) {
+			ans=-1;
+		}
+	}
+	if(N<P && !yet) ans = N+1;
+	
+	cout<<ans;
+	
+	return 0;
+}
