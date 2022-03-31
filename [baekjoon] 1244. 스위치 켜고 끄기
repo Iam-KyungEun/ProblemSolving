@@ -1,0 +1,46 @@
+#include <iostream>
+
+using namespace std;
+
+const int MAX=101;
+
+int swi[MAX];
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	int N,S,gender,num;
+	
+	cin>>N;
+	for(int i=1;i<=N;i++){
+		cin>>swi[i];
+	}	
+	cin>>S;
+	for(int i=0;i<S;i++){
+		cin>>gender>>num;
+		if(gender==1){ //male
+			for(int j=num;j<=N;j+=num){
+				swi[j]=(swi[j]+1)%2;
+			}
+		} else { //female
+			int cnt = (N-num<num-1) ? N-num : num-1;
+			swi[num] = (swi[num]+1)%2;
+			for(int j=1;j<=cnt;j++){
+				if(swi[num-j] != swi[num+j]){
+					break;
+				}
+				else {
+					swi[num-j]=(swi[num-j]+1)%2;
+					swi[num+j]=swi[num-j];
+				}
+			}
+		}
+	}
+	
+	for(int i=1;i<=N;i++){
+		cout<<swi[i]<<' ';
+		if(i%20==0) cout<<'\n';
+	}
+	return 0;
+}
