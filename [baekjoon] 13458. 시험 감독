@@ -1,0 +1,26 @@
+#include <cstdio>
+#include <vector>
+
+using namespace std;
+
+typedef long long int lli;
+lli N;
+lli B,C;
+lli subviewer;
+vector <lli> A;
+
+int main(){
+	scanf("%lld",&N);
+	for(lli i=0;i<N;i++){
+		lli a;
+		scanf("%lld",&a);
+		A.push_back(a);
+	}	
+	scanf("%lld %lld",&B,&C);
+	for(lli i=0;i<A.size();i++){
+		if((A[i]-B)<0) continue;
+		subviewer+=(A[i]-B)/C;
+		if((A[i]-B)%C>0) subviewer++;
+	}
+	printf("%lld",N+subviewer);
+}
