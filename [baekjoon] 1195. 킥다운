@@ -1,0 +1,55 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+	
+	string gear1;
+	string gear2;
+	int minlen,len;
+	
+	cin>>gear1>>gear2;
+	
+	if(gear2.length() > gear1.length()) {
+		string temp=gear2;
+		gear2=gear1;
+		gear1=temp;
+	}
+	minlen=gear1.length()+gear2.length();
+	for(int start=gear2.length()-1;start>=0;start--){
+		int j=start,i=0;
+		bool flag=true;
+		for(;i<gear1.length() && j<gear2.length();i++,j++){
+			if(gear1[i]=='2' && gear2[j]=='2'){
+				flag=false;
+				break;
+			}
+		}
+		if(flag){
+			len=gear1.length()+gear2.length()-i;
+			if(len==gear1.length()){
+				cout<<len;
+				return 0;
+			} else if(len<minlen) minlen=len;
+		}
+	}
+	for(int start=1;start<gear1.length();start++){
+		int j=start,i=0;
+		bool flag=true;
+		for(;i<gear2.length() && j<gear1.length();i++,j++){
+			if(gear2[i]=='2' && gear1[j]=='2'){
+				flag=false;
+				break;
+			}
+		}
+		if(flag){
+			len = gear1.length()+gear2.length()-i;
+			if(len<minlen) minlen=len;
+			break;
+		}
+	}
+	cout<<minlen;
+	return 0;
+}
