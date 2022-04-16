@@ -1,0 +1,34 @@
+#include <iostream>
+#include <map>
+
+using namespace std;
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL); cout.tie(NULL);
+
+    int n,T;
+    int maxcnt;
+	long num,maxidx;
+    map <long,int> m;
+    cin>>n;
+    for(int tc=0;tc<n;tc++){
+    	cin>>T;
+    	maxidx=-1;
+    	maxcnt=0;
+    	map <int,int> m;
+    	for(int i=0;i<T;i++){
+    		cin>>num;
+    		m[num]++;
+    		if(m[num]>maxcnt) {
+				maxcnt = m[num];
+				maxidx = num;
+			}
+		}
+		if(m[maxidx]>(T/2)) cout<<maxidx;
+		else cout<<"SYJKGW";
+		cout<<'\n';
+		m.clear();
+	}
+    return 0;
+}
