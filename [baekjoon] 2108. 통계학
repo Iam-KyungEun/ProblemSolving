@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <cmath>
+
+using namespace std;
+
+bool cmp(const int &a, const int &b){
+	return a<b;
+}
+
+int main(){
+	int N,num,maxcnt=1;
+	double sum=0;
+	vector <int> v;
+	vector <int> mf;
+	map <int,int> m;
+	
+	cin>>N;
+	
+	v.assign(N,0);
+	for(int i=0;i<N;i++){
+		cin>>num;
+		sum+=num;
+		v[i]=num;
+		m[num]++;
+	}
+	sort(v.begin(),v.end(),cmp);
+	
+	for(auto &elem: m){
+		if(elem.second>maxcnt) {
+			maxcnt=elem.second;
+			mf.clear();
+			mf.push_back(elem.first);
+		} else if(elem.second==maxcnt){
+			mf.push_back(elem.first);
+		}
+	}
+	
+	if(round(sum/N)==-0) cout<<0<<'\n';
+	else cout<<round(sum/N)<<'\n';
+	
+	cout<<v[(N/2)]<<'\n';
+	
+	if(mf.size()==1) cout<<mf[0]<<'\n';
+	else cout<<mf[1]<<'\n';
+	
+	cout<<v.back()-v.front();
+	
+	return 0;
+}
