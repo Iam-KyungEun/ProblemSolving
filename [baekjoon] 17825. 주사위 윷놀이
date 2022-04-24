@@ -1,0 +1,97 @@
+#include <iostream>
+
+using namespace std;
+
+int dice[10];
+int posh[4];
+bool finh[4];
+bool checkb[33];
+int ans;
+int board[33]={0,2,4,6,8,10,12,14,16,18,20,
+				22,24,26,28,30,32,34,36,38,13,
+				16,19,22,24,28,27,26,25,30,35,
+				40,0};
+
+
+void dfs(int sum, int cnt){
+	if(cnt>=10){
+		if(sum>ans) ans=sum;
+		return;
+	} 
+	for(int i=0;i<4;i++){
+		if(!finh[i]) {
+			//i번째 말 이동하기
+			int temp=posh[i];
+			if(posh[i]>0 && posh[i]%5==0 && posh[i]<20){ // 파란색 타야함 
+				if(posh[i]==5) {
+					if(dice[cnt]<=3) {
+						posh[i]+=dice[cnt]+14;
+					} else{
+						posh[i]+=dice[cnt]+19;
+					}
+				} else if(posh[i]==10) {
+					if(dice[cnt]<=2) {
+						posh[i]+=dice[cnt]+12;
+					} else {
+						posh[i]+=dice[cnt]+15;
+					}
+				} else if(posh[i]==15) {
+					posh[i]+=dice[cnt]+9;
+				}
+			}
+			else if(posh[i]<20) { // 그냥 크기만큼 더해주면 됨 
+				posh[i]+=dice[cnt];
+				if(posh[i]==20) posh[i]=31;
+				else if(posh[i]>20) {
+					posh[i]=32;
+				}
+			}
+			else if(posh[i]>=20 && posh[i]<=22) {
+				posh[i]+=dice[cnt];
+				if(posh[i]>22) {
+					posh[i]+=5;
+				}
+			}
+			else if(posh[i]>=23 && posh[i]<=24) {
+				posh[i]+=dice[cnt];
+				if(posh[i]>24) {
+					posh[i]+=3;
+				}
+			}
+			else if(posh[i]>=25) {
+				posh[i]+=dice[cnt];
+			}
+			
+			if(posh[i]<32 && checkb[posh[i]]) { //이동하려는 자리에 다른 말 있음  
+				posh[i]=temp;
+				continue;
+			}
+			
+			if(posh[i]>=32) {
+				finh[i]=true;
+				posh[i]=32;
+			}
+			
+			checkb[posh[i]]=true;
+			checkb[temp]=false;
+			
+			int num=board[posh[i]];
+			dfs(sum+num,cnt+1);
+			
+			// 원상복귀 
+			
+			checkb[posh[i]]=false;
+			posh[i]=temp;
+			checkb[posh[i]]=true;
+			finh[i]=false;
+		}
+	}
+}
+int main(){
+	for(int i=0;i<10;i++){
+		cin>>dice[i];
+	}
+	dfs(0,0); 
+	cout<<ans;
+	return 0;
+}
