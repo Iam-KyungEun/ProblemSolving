@@ -1,5 +1,5 @@
 #include <iostream>
-#include <queue>
+#include <deque>
 
 using namespace std;
 
@@ -8,7 +8,6 @@ const int MAX= 51;
 int dy[8]={-1,-1,0,1,1,1,0,-1}; //↑↗→↘↓↙←↖ 
 int dx[8]={0,1,1,1,0,-1,-1,-1};
 int N,M,K; 
-int NMAX;
 
 struct fireball {
 	int m;
@@ -87,11 +86,12 @@ int main(){
 		cin>>y>>x>>m>>s>>d;
 		map[y][x].push_back({m,s,d,true});
 	}
-	NMAX=N*1000;
+
 	for(int k=1;k<=K;k++){
 		move();
 		merge();
 	}
+	
 	int ans=0;
 	for(int i=1;i<=N;i++){
 		for(int j=1;j<=N;j++){
