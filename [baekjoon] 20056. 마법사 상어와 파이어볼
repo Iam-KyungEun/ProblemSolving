@@ -1,0 +1,105 @@
+#include <iostream>
+#include <queue>
+
+using namespace std;
+
+const int MAX= 51;
+
+int dy[8]={-1,-1,0,1,1,1,0,-1}; //↑↗→↘↓↙←↖ 
+int dx[8]={0,1,1,1,0,-1,-1,-1};
+int N,M,K; 
+int NMAX;
+
+struct fireball {
+	int m;
+	int s;
+	int dir;
+	bool check;
+};
+
+deque <fireball> map[MAX][MAX];
+
+void move() {
+	for(int i=1;i<=N;i++){
+		for(int j=1;j<=N;j++){
+			while(!map[i][j].empty()){
+				
+				fireball nb = map[i][j].front();
+				if(!nb.check) break;
+				int ny=i+(dy[nb.dir]*nb.s);
+				int nx=j+(dx[nb.dir]*nb.s);
+			
+				ny=ny%(N);
+				nx=nx%(N);
+				while(ny<1) ny+=N;
+				while(nx<1) nx+=N;		
+				map[ny][nx].push_back({nb.m,nb.s,nb.dir,false});				
+				map[i][j].pop_front();
+			}
+		}
+	}
+}
+
+void merge(){
+	for(int i=1;i<=N;i++){
+		for(int j=1;j<=N;j++){
+			
+			if(map[i][j].size()<=1){
+				if(!map[i][j].empty()){
+					map[i][j][0].check=true;
+				}
+				continue;
+			}
+			
+			int nm=0, ns=0;
+			int even=0, odd=0;
+			int cnt=0;
+			while(!map[i][j].empty()){
+				fireball nb = map[i][j].front();
+				if(nb.check) break;
+				nm+= nb.m;
+				ns+= nb.s;
+				if(nb.dir%2==0) even++;
+				else odd++;
+				map[i][j].pop_front();
+				cnt++;
+			}
+
+			nm/=5;
+			ns/=cnt;
+			
+			if(nm==0) continue;
+			int start;
+			if(even==0 || odd==0)	start=0;
+			else	start=1;
+			
+			for(int nd=start;nd<8;nd+=2){
+				map[i][j].push_back({nm,ns,nd,true});
+			}
+		}
+	}
+	
+}
+int main(){
+	cin>>N>>M>>K;
+	int y,x,m,d,s;
+	for(int i=0;i<M;i++){
+		cin>>y>>x>>m>>s>>d;
+		map[y][x].push_back({m,s,d,true});
+	}
+	NMAX=N*1000;
+	for(int k=1;k<=K;k++){
+		move();
+		merge();
+	}
+	int ans=0;
+	for(int i=1;i<=N;i++){
+		for(int j=1;j<=N;j++){
+			for(int k=0;k<map[i][j].size();k++){
+				ans+=map[i][j][k].m;
+			}
+		}
+	}
+	cout<<ans;
+	return 0;
+}
