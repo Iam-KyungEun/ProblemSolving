@@ -1,0 +1,70 @@
+#include <iostream>
+
+using namespace std;
+
+const int MAX= 51;
+
+int N,M;
+int dy[4]={-1,0,1,0};  // ↑→↓← 
+int dx[4]={0,1,0,-1};
+int map[MAX][MAX];
+bool clean[MAX][MAX];
+
+struct info{
+	int y;
+	int x;
+	int d;
+};
+
+info robot;
+
+int main(){
+	
+	cin>>N>>M;
+	cin>>robot.y>>robot.x>>robot.d;
+	
+	for(int i=0;i<N;i++){
+		for(int j=0;j<M;j++){
+			cin>>map[i][j];
+		}
+	}
+	
+	bool stop=false;
+	clean[robot.y][robot.x]=true;
+
+	int ans=1;
+	while(1){
+		// 현재 위치 청소
+		bool flag=false;
+		for(int i=1;i<=4;i++){
+			robot.d--;
+			if(robot.d<0) robot.d=3; 
+			int ny=robot.y+dy[robot.d];
+			int nx=robot.x+dx[robot.d];
+			if(ny>0 && nx>0 && ny<N-1 && nx<M-1 && map[ny][nx]==0 && !clean[ny][nx]){
+				robot.y=ny;
+				robot.x=nx;
+				flag=true;
+				clean[robot.y][robot.x]=true;
+				ans++;
+				break;
+			}
+		}
+
+		if(!flag){
+			int ny=robot.y-dy[robot.d];
+			int nx=robot.x-dx[robot.d];
+			if(ny>=0 && nx>=0 && ny<N && nx<M && map[ny][nx]==0){
+				robot.y=ny;
+				robot.x=nx;
+			} else{
+				stop=true;
+				break;
+			}
+		}
+	}
+	
+	cout<<ans;
+	
+	return 0;
+}
