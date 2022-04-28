@@ -1,0 +1,171 @@
+#include <iostream>
+#include <queue>
+#include <cstring>
+
+using namespace std;
+
+const int MAX = 22;
+
+int N,M;
+int map[MAX][MAX];
+int temp[MAX][MAX];
+bool check[MAX][MAX];
+bool check2[MAX][MAX];
+
+int dy[4]={-1,1,0,0};
+int dx[4]={0,0,-1,1};
+int score;
+
+struct info{
+	int y;
+	int x;
+	int cnt;
+	int rainbowcnt;
+	bool operator<(const info& i) const {
+		if (cnt == i.cnt) {
+			if (rainbowcnt == i.rainbowcnt) {
+				if (y == i.y) return x < i.x;
+				else return y < i.y;
+			}
+			else return rainbowcnt < i.rainbowcnt;
+		}
+		else return cnt < i.cnt;
+	}
+};
+
+priority_queue <info> pq;
+
+void gravity() {
+	for(int j=1;j<=N;j++){
+		int empty=0;
+		for(int i=N;i>=1;i--){
+			if(map[i][j]==-2) empty++;
+			else if(map[i][j]==-1) empty=0;
+			else{
+				if(empty==0) continue;
+				map[i+empty][j] = map[i][j];
+				map[i][j]=-2;
+			}
+		}
+	}
+}
+
+void turn() {
+	for(int i=1;i<=N;i++){
+		for(int j=1;j<=N;j++){
+			temp[i][j]=map[i][j];
+		}
+	}
+	for(int i=1;i<=N;i++){
+		for(int j=1;j<=N;j++){
+			map[i][j]=temp[j][N+1-i];
+		}
+	}
+}
+
+void findBlock(int i,int j){
+	queue < pair<int,int> > q;
+	q.push({i,j});
+	int color=map[i][j];
+	check[i][j]=true;
+	int cnt=1;
+	int rainbowcnt=0; 
+	while(!q.empty()){
+		int y=q.front().first;
+		int x=q.front().second;
+		
+		q.pop();
+		
+		for(int k=0;k<4;k++){
+			int ny=y+dy[k];
+			int nx=x+dx[k];
+			
+			if(ny>0 && nx>0 && ny<=N && nx<=N){
+				if(!check[ny][nx] && map[ny][nx]==color){
+					check[ny][nx]=true;
+					q.push({ny,nx});
+					cnt++;
+				}
+				else if(map[ny][nx]==0 && !check2[ny][nx]){
+					check2[ny][nx]=true;
+					q.push({ny,nx});
+					cnt++;
+					rainbowcnt++;
+				}
+			}
+		}
+	}
+	pq.push({i,j,cnt,rainbowcnt});
+	memset(check2,0,sizeof(check2));
+}
+
+void delBlock(int i,int j,int maxcnt){
+	queue <pair<int,int> > Q;
+	Q.push({i,j});
+	int color=map[i][j];
+	map[i][j]=-2;
+	
+	while(!Q.empty()){
+		int y=Q.front().first;
+		int x=Q.front().second;
+		
+		Q.pop();
+		for(int k=0;k<4;k++){
+			int ny=y+dy[k];
+			int nx=x+dx[k];
+			
+			if(ny>0 && nx>0 && ny<=N && nx<=N && 
+				(map[ny][nx]==color || map[ny][nx]==0)){
+				map[ny][nx]=-2;
+				Q.push({ny,nx});
+			}
+		}
+	}
+	score+=(maxcnt*maxcnt);
+}
+
+int main(){
+	cin>>N>>M;
+	for(int i=1;i<=N;i++){
+		for(int j=1;j<=N;j++){
+			cin>>map[i][j];
+		}
+	}
+	while(1){
+		bool stop=true;
+		for(int i=1;i<=N;i++){
+			for(int j=1;j<=N;j++){
+				
+				if(map[i][j]>0 && !check[i][j]){ // 
+					
+					bool possible=false;
+					for(int k=0;k<4;k++){
+						int ny=i+dy[k];
+						int nx=j+dx[k];
+						if(ny>0 && nx>0 && ny<=N && nx<=N && (map[ny][nx]==map[i][j] || map[ny][nx]==0)){
+							possible=true;
+							stop=false;
+							break;
+						}
+					}
+					if(possible) {
+						findBlock(i,j);
+					}
+				}
+			}
+		}
+		
+		if(stop)  break;
+		int dely=pq.top().y;
+		int delx=pq.top().x;
+		int delcnt=pq.top().cnt;
+		while(!pq.empty()) pq.pop();
+		delBlock(dely,delx,delcnt);
+		gravity();
+		turn();
+		gravity();
+		memset(check,0,sizeof(check));
+	}
+	cout<<score;
+	return 0;
+}
