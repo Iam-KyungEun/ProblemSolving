@@ -1,0 +1,114 @@
+#include <iostream>
+#include <deque>
+
+using namespace std;
+
+const int MAX = 11;
+
+int A[MAX][MAX];
+int map[MAX][MAX];
+bool check[MAX][MAX];
+int N,M,K;
+int dy[8]={-1,1,0,0,-1,-1,1,1};
+int dx[8]={0,0,-1,1,-1,1,-1,1};
+
+deque <int> tree[MAX][MAX];
+deque <int> deadtree[MAX][MAX];
+
+
+void spring(){
+	for(int i=1;i<=N;i++){
+		for(int j=1;j<=N;j++){
+			if(tree[i][j].empty()) continue;
+			int mem=-1;
+			for(int k=0;k<tree[i][j].size();k++){
+				if(map[i][j]>=tree[i][j][k]){ // 양분을 먹을 수 있으면 양분을 먹음. 
+					map[i][j]-=tree[i][j][k];
+					tree[i][j][k]++;
+				}
+				else{
+					mem=k;
+					break;
+				}
+			}
+			
+			while(mem>=0 && tree[i][j].size()>mem){
+				int age=tree[i][j].back();
+				deadtree[i][j].push_front(age);
+				tree[i][j].pop_back();	
+			}
+		}
+	}	
+}
+
+void summer(){
+	for(int i=1;i<=N;i++){
+		for(int j=1;j<=N;j++){
+			if(deadtree[i][j].empty()) continue;
+			while(!deadtree[i][j].empty()){
+				int energy=deadtree[i][j].front()/2;
+				map[i][j]+=energy;
+				deadtree[i][j].pop_front();
+			}
+		}
+	}
+} 
+
+void fall(){
+	for(int i=1;i<=N;i++){
+		for(int j=1;j<=N;j++){
+			for(int k=0;k<tree[i][j].size();k++){
+				if(tree[i][j][k]%5==0){
+					for(int d=0;d<8;d++){
+						int ny=i+dy[d];
+						int nx=j+dx[d];
+						if(ny>=1 && nx>=1 && ny<=N && nx<=N){
+							tree[ny][nx].push_front(1);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void winter(){
+	for(int i=1;i<=N;i++){
+		for(int j=1;j<=N;j++){
+			map[i][j]+=A[i][j];
+		}
+	}
+}
+
+int main(){
+	int x,y,z;
+	cin>>N>>M>>K;
+	
+	for(int i=1;i<=N;i++){
+		for(int j=1;j<=N;j++){
+			cin>>A[i][j];
+			map[i][j]=5;
+		}
+	}	
+	
+	for(int i=0;i<M;i++){
+		cin>>y>>x>>z;
+		tree[y][x].push_back(z);
+	}
+	
+	for(int k=1;k<=K;k++){
+		spring();
+		summer();
+		fall();
+		winter();
+	}
+	
+	int ans=0;
+	for(int i=1;i<=N;i++){
+		for(int j=1;j<=N;j++){
+			ans+=tree[i][j].size();
+		}
+	}
+	cout<<ans;
+	return 0;
+} 
