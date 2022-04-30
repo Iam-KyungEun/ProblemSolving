@@ -1,0 +1,179 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int fdy[9]={0,0,-1,-1,-1,0,1,1,1};
+int fdx[9]={0,-1,-1,0,1,1,1,0,-1};
+int sdy[5]={0,-1,0,1,0};
+int sdx[5]={0,0,-1,0,1};
+int smell[5][5];
+int M,S;
+int sharky,sharkx;
+int maxfish;
+int result[3];
+int tempresult[3];
+
+vector <int> map[5][5];
+vector <int> temp[5][5];
+
+int checkroute(){
+	bool check[5][5]={false, };
+	int y=sharky;
+	int x=sharkx;
+	int eat=0;
+	for(int i=0;i<3;i++){
+		int ny=y+sdy[tempresult[i]];
+		int nx=x+sdx[tempresult[i]];
+		if(ny>4 || nx>4 || ny<1 || nx<1){
+			return -1;
+		}
+		if(check[ny][nx]==false) {
+			eat+=map[ny][nx].size();
+			check[ny][nx]=true;
+		}
+		y=ny;
+		x=nx;
+	}
+	return eat;
+}
+
+void findroute(int cnt){
+	if(cnt==3){
+		int fishcnt=checkroute();
+		if(fishcnt>maxfish){
+			for(int i=0;i<3;i++){
+				result[i]=tempresult[i];
+			}
+			maxfish=fishcnt;
+		}
+	}
+	else{
+		for(int i=1;i<=4;i++){
+			tempresult[cnt]=i;
+			findroute(cnt+1);
+		}
+	}
+}
+
+void moveshark(int step){
+	int y=sharky;
+	int x=sharkx;
+	for(int i=0;i<3;i++){
+		int dir=result[i];
+		int ny=y+sdy[dir];
+		int nx=x+sdx[dir];
+		
+		if(map[ny][nx].size()>0){
+			smell[ny][nx]=step;
+			map[ny][nx].clear();
+		}
+		
+		y=ny;
+		x=nx;
+		sharky=ny;
+		sharkx=nx;
+	}
+}
+
+void delsmell(int step){
+	for(int i=1;i<=4;i++){
+		for(int j=1;j<=4;j++){
+			if(smell[i][j]==step-2) smell[i][j]=0;
+		}
+	}
+}
+
+void copyfish(){
+	for(int i=1;i<=4;i++){
+		for(int j=1;j<=4;j++){
+			temp[i][j]=map[i][j];
+		}
+	}
+}
+
+void executecopy(){
+	for(int i=1;i<=4;i++){
+		for(int j=1;j<=4;j++){
+			for(int k=0;k<temp[i][j].size();k++){
+				map[i][j].push_back(temp[i][j][k]);
+			}
+		}
+	}
+}
+
+void movefish(){
+	vector <int> tempmap[5][5];
+
+	for(int i=1;i<=4;i++){
+		for(int j=1;j<=4;j++){
+			int y=i, x=j;
+			for(int k=0;k<map[i][j].size();k++){
+				int nd=map[i][j][k];
+				int ny,nx;
+				bool flag=false;
+				for(int l=1;l<=8;l++){
+					ny=i+fdy[nd];
+					nx=j+fdx[nd];
+					if(ny>=1 && nx>=1 && ny<=4 && nx<=4 && (ny!=sharky || nx!=sharkx) && smell[ny][nx]==0){
+						flag=true;
+						break;
+					}
+					nd--;
+					if(nd==0) nd=8;
+				}
+				if(flag==false){
+					tempmap[i][j].push_back(map[i][j][k]);
+				}else if(flag==true){
+					
+					tempmap[ny][nx].push_back(nd);
+				}
+			}
+		}
+	}
+	for(int i=1;i<=4;i++){
+		for(int j=1;j<=4;j++){
+			map[i][j]=tempmap[i][j];
+		}
+	}
+}
+
+void print(){
+	for(int i=1;i<=4;i++){
+		for(int j=1;j<=4;j++){
+			cout<<map[i][j].size()<<' ';
+		}
+		cout<<"\n";
+	}
+	cout<<"\n";
+}
+int main(){
+	
+	cin>>M>>S;
+	int y,x,d;
+	for(int i=0;i<M;i++){
+		cin>>y>>x>>d;
+		map[y][x].push_back(d);
+	}
+	cin>>sharky>>sharkx;
+	
+	for(int i=1;i<=S;i++){
+		maxfish=-1;
+		copyfish();
+		movefish();
+		findroute(0);
+		moveshark(i);
+		delsmell(i);
+		executecopy();
+	}
+	
+	int ans=0;
+	for(int i=1;i<=4;i++){
+		for(int j=1;j<=4;j++){
+			ans+=map[i][j].size();
+		}
+	}
+	
+	cout<<ans;
+	return 0;
+}
