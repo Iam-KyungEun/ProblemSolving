@@ -1,0 +1,112 @@
+#include <iostream>
+
+using namespace std;
+
+int dy[9]={0,-1,-1,0,1,1,1,0,-1};
+int dx[9]={0,0,-1,-1,-1,0,1,1,1};
+
+struct info{
+	int y;
+	int x;
+	int dir;
+	bool check;
+};
+
+int ans;
+
+void dfs(int map[][4],info fish[],int sharky,int sharkx,int sharkdir,int score){
+	int tempMap[4][4];
+	info tempFish[17];
+	
+	if(score>ans) ans=score;
+	
+	for(int i=0;i<4;i++){
+		for(int j=0;j<4;j++){
+			tempMap[i][j]=map[i][j];
+		}
+	}
+	
+	for(int i=1;i<=16;i++){
+		tempFish[i]=fish[i];
+	}
+	
+	int fishNum=tempMap[sharky][sharkx];
+	tempFish[fishNum].check=false;
+	tempMap[sharky][sharkx]=-1;
+	
+	for(int i=1;i<=16;i++){
+		if(tempFish[i].check==false) continue;
+		
+		int y=tempFish[i].y;
+		int x=tempFish[i].x;
+		int d=tempFish[i].dir;
+		
+		int ny=y+dy[d];
+		int nx=x+dx[d];
+		int nd=d;
+		
+		bool flag=true;
+		while(ny>=4 || nx>=4 || ny<0 || nx<0 || (ny==sharky && nx==sharkx)){
+			nd++;
+			if(nd==9) nd=1;
+			if(nd==d){
+				flag=false;
+			}
+			ny=y+dy[nd];
+			nx=x+dx[nd];
+		}
+		if(!flag) continue;
+		
+		if(tempMap[ny][nx]!=-1){
+			int idx=tempMap[ny][nx];
+			tempFish[idx].y=y;
+			tempFish[idx].x=x;
+			tempMap[y][x]=idx;
+			tempFish[i].y=ny;
+			tempFish[i].x=nx;
+			tempFish[i].dir=nd;
+			tempMap[ny][nx]=i;
+		}
+		else{  // -1인데 상어는 아님, 왜냐면 sharky sharkx 가 아니어서 
+			tempMap[y][x]=-1;
+			tempFish[i].y=ny;
+			tempFish[i].x=nx;
+			tempFish[i].dir=nd;
+			tempMap[ny][nx]=i;
+		}
+		
+	}
+	
+	for(int i=1;i<=3;i++){
+		int ny=sharky+dy[sharkdir]*i;
+		int nx=sharkx+dx[sharkdir]*i;
+		
+		if(ny>=4 || nx>=4 || ny<0 || nx<0) break;
+		if(tempMap[ny][nx]!=-1){
+			int idx=tempMap[ny][nx];
+			dfs(tempMap,tempFish,tempFish[idx].y,tempFish[idx].x,tempFish[idx].dir,score+idx);
+		}
+	}
+}
+
+int main(){
+	
+	int a,b;
+	info fish[17];
+	int map[4][4]={0,};
+	for(int i=0;i<4;i++){
+		for(int j=0;j<4;j++){
+			cin>>a>>b;
+			fish[a].y=i;
+			fish[a].x=j;
+			fish[a].dir=b;
+			fish[a].check=true;
+			map[i][j]=a;
+		}
+	}
+	
+	int idx=map[0][0];
+	dfs(map,fish,fish[idx].y,fish[idx].x,fish[idx].dir,idx);
+	cout<<ans;
+	return 0;
+}
